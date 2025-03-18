@@ -27,27 +27,27 @@ type SectionType = {
 };
 
 const SECTIONS: SectionType[] = [
-  { id: "overview", title: "Project Overview", icon: <Eye className="h-4 w-4 mr-2" /> },
-  { id: "objectives", title: "Objectives", icon: <Target className="h-4 w-4 mr-2" /> },
-  { id: "data-description", title: "Data Description", icon: <Database className="h-4 w-4 mr-2" /> },
-  { id: "methodology", title: "Methodology", icon: <SearchCode className="h-4 w-4 mr-2" /> },
-  { id: "key-insights", title: "Key Insights", icon: <Lightbulb className="h-4 w-4 mr-2" /> },
-  { id: "challenges", title: "Challenges & Learnings", icon: <AlertCircle className="h-4 w-4 mr-2" /> },
-  { id: "project-files", title: "Project Files", icon: <Files className="h-4 w-4 mr-2" /> }
+  { id: "overview", title: "Project Overview", icon: <Eye className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "objectives", title: "Objectives", icon: <Target className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "data-description", title: "Data Description", icon: <Database className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "methodology", title: "Methodology", icon: <SearchCode className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "key-insights", title: "Key Insights", icon: <Lightbulb className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "challenges", title: "Challenges & Learnings", icon: <AlertCircle className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "project-files", title: "Project Files", icon: <Files className="h-4 w-4 mr-1 text-blue-500" /> }
 ];
 
 // Extended sections to match the image navigation
 const EXTENDED_SECTIONS: SectionType[] = [
-  { id: "overview", title: "Overview", icon: <Eye className="h-4 w-4 mr-2" /> },
-  { id: "objectives", title: "Objective", icon: <Target className="h-4 w-4 mr-2" /> },
-  { id: "data-model", title: "Data Model", icon: <Database className="h-4 w-4 mr-2" /> },
-  { id: "methodology", title: "Methodology", icon: <SearchCode className="h-4 w-4 mr-2" /> },
-  { id: "dashboard", title: "Dashboard", icon: <BarChart2 className="h-4 w-4 mr-2" /> },
-  { id: "sql-queries", title: "SQL Queries", icon: <FileText className="h-4 w-4 mr-2" /> },
-  { id: "ad-hoc-reports", title: "Ad Hoc Reports", icon: <PlusCircle className="h-4 w-4 mr-2" /> },
-  { id: "insights", title: "Insights", icon: <Lightbulb className="h-4 w-4 mr-2" /> },
-  { id: "challenges", title: "Challenges", icon: <AlertCircle className="h-4 w-4 mr-2" /> },
-  { id: "files", title: "Files", icon: <Files className="h-4 w-4 mr-2" /> }
+  { id: "overview", title: "Overview", icon: <Eye className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "objectives", title: "Objective", icon: <Target className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "data-model", title: "Data Model", icon: <Database className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "methodology", title: "Methodology", icon: <SearchCode className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "dashboard", title: "Dashboard", icon: <BarChart2 className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "sql-queries", title: "SQL Queries", icon: <FileText className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "ad-hoc-reports", title: "Ad Hoc Reports", icon: <PlusCircle className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "insights", title: "Insights", icon: <Lightbulb className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "challenges", title: "Challenges", icon: <AlertCircle className="h-4 w-4 mr-1 text-blue-500" /> },
+  { id: "files", title: "Files", icon: <Files className="h-4 w-4 mr-1 text-blue-500" /> }
 ];
 
 type DataJobMarketSidebarProps = {
@@ -105,8 +105,10 @@ const DataJobMarketSidebar = ({
                   variant="ghost"
                   size="sm"
                   className={cn(
-                    "whitespace-nowrap rounded-full flex items-center",
-                    currentSection === section.id && "bg-primary text-primary-foreground"
+                    "whitespace-nowrap rounded-full flex items-center gap-1",
+                    currentSection === section.id 
+                      ? "bg-primary text-primary-foreground [&_svg]:text-white" 
+                      : "[&_svg]:text-blue-500"
                   )}
                   onClick={() => scrollToSection(section.id)}
                 >
