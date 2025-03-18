@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Github, ChevronDown, ChevronUp, ExternalLink, Copy } from "lucide-react";
@@ -276,32 +277,28 @@ plt.show()`}
                             <AccordionContent>
                               <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
                                 <button 
-                                  onClick={() => copyToClipboard(
-                                    from matplotlib.ticker import PercentFormatter
-                                    
-                                    df_plot = df_DA_US_percent.iloc[:, :5]
-                                    sns.lineplot(data=df_plot, dashes=False, legend='full', palette='tab10')
-                                    
-                                    plt.gca().yaxis.set_major_formatter(PercentFormatter(decimals=0))
-                                    
-                                    plt.show()
-                                    )}
-                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
-                                  aria-label="Copy code"
-                                >
-                                  <Copy size={16} />
-                                </button>
-                                <pre className="text-sm">
-                                  {
-from matplotlib.ticker import PercentFormatter
+                                  onClick={() => copyToClipboard(`from matplotlib.ticker import PercentFormatter
 
 df_plot = df_DA_US_percent.iloc[:, :5]
 sns.lineplot(data=df_plot, dashes=False, legend='full', palette='tab10')
 
 plt.gca().yaxis.set_major_formatter(PercentFormatter(decimals=0))
 
-plt.show()
-}
+plt.show()`)}
+                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                                  aria-label="Copy code"
+                                >
+                                  <Copy size={16} />
+                                </button>
+                                <pre className="text-sm">
+                                  {`from matplotlib.ticker import PercentFormatter
+
+df_plot = df_DA_US_percent.iloc[:, :5]
+sns.lineplot(data=df_plot, dashes=False, legend='full', palette='tab10')
+
+plt.gca().yaxis.set_major_formatter(PercentFormatter(decimals=0))
+
+plt.show()`}
                                 </pre>
                               </div>
                             </AccordionContent>
@@ -348,11 +345,26 @@ plt.show()
                           <AccordionItem value="code3">
                             <AccordionTrigger>View Code</AccordionTrigger>
                             <AccordionContent>
-                              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
-                                <code>
-                                  {`# Code will be uploaded later`}
-                                </code>
-                              </pre>
+                              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                                <button 
+                                  onClick={() => copyToClipboard(`sns.boxplot(data=df_US_top6, x='salary_year_avg', y='job_title_short', order=job_order)
+
+ticks_x = plt.FuncFormatter(lambda y, pos: f'${parseInt(y/1000)}K')
+plt.gca().xaxis.set_major_formatter(ticks_x)
+plt.show()`)}
+                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                                  aria-label="Copy code"
+                                >
+                                  <Copy size={16} />
+                                </button>
+                                <pre className="text-sm">
+                                  {`sns.boxplot(data=df_US_top6, x='salary_year_avg', y='job_title_short', order=job_order)
+
+ticks_x = plt.FuncFormatter(lambda y, pos: f'${parseInt(y/1000)}K')
+plt.gca().xaxis.set_major_formatter(ticks_x)
+plt.show()`}
+                                </pre>
+                              </div>
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
@@ -397,11 +409,34 @@ plt.show()
                           <AccordionItem value="code4">
                             <AccordionTrigger>View Code</AccordionTrigger>
                             <AccordionContent>
-                              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
-                                <code>
-                                  {`# Code will be uploaded later`}
-                                </code>
-                              </pre>
+                              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                                <button 
+                                  onClick={() => copyToClipboard(`fig, ax = plt.subplots(2, 1)  
+
+# Top 10 Highest Paid Skills for Data Analysts
+sns.barplot(data=df_DA_top_pay, x='median', y=df_DA_top_pay.index, hue='median', ax=ax[0], palette='dark:b_r')
+
+# Top 10 Most In-Demand Skills for Data Analystsr')
+sns.barplot(data=df_DA_skills, x='median', y=df_DA_skills.index, hue='median', ax=ax[1], palette='light:b')
+
+plt.show()`)}
+                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                                  aria-label="Copy code"
+                                >
+                                  <Copy size={16} />
+                                </button>
+                                <pre className="text-sm">
+                                  {`fig, ax = plt.subplots(2, 1)  
+
+# Top 10 Highest Paid Skills for Data Analysts
+sns.barplot(data=df_DA_top_pay, x='median', y=df_DA_top_pay.index, hue='median', ax=ax[0], palette='dark:b_r')
+
+# Top 10 Most In-Demand Skills for Data Analystsr')
+sns.barplot(data=df_DA_skills, x='median', y=df_DA_skills.index, hue='median', ax=ax[1], palette='light:b')
+
+plt.show()`}
+                                </pre>
+                              </div>
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
@@ -446,11 +481,40 @@ plt.show()
                           <AccordionItem value="code5">
                             <AccordionTrigger>View Code</AccordionTrigger>
                             <AccordionContent>
-                              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
-                                <code>
-                                  {`# Code will be uploaded later`}
-                                </code>
-                              </pre>
+                              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                                <button 
+                                  onClick={() => copyToClipboard(`from matplotlib.ticker import PercentFormatter
+
+# Create a scatter plot
+scatter = sns.scatterplot(
+    data=df_DA_skills_tech_high_demand,
+    x='skill_percent',
+    y='median_salary',
+    hue='technology',  # Color by technology
+    palette='bright',  # Use a bright palette for distinct colors
+    legend='full'  # Ensure the legend is shown
+)
+plt.show()`)}
+                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                                  aria-label="Copy code"
+                                >
+                                  <Copy size={16} />
+                                </button>
+                                <pre className="text-sm">
+                                  {`from matplotlib.ticker import PercentFormatter
+
+# Create a scatter plot
+scatter = sns.scatterplot(
+    data=df_DA_skills_tech_high_demand,
+    x='skill_percent',
+    y='median_salary',
+    hue='technology',  # Color by technology
+    palette='bright',  # Use a bright palette for distinct colors
+    legend='full'  # Ensure the legend is shown
+)
+plt.show()`}
+                                </pre>
+                              </div>
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
