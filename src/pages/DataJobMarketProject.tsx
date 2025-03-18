@@ -1,6 +1,7 @@
+
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Github, ChevronDown, ChevronUp, ExternalLink, Copy } from "lucide-react";
+import { Github, ChevronDown, ChevronUp, ExternalLink, Copy, BarChart2, LineChart, PieChart, ScatterChart, Percent } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -130,7 +131,7 @@ const DataJobMarketProject = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <section id="overview" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">1️⃣ Project Overview</h2>
+              <h2 className="text-2xl font-bold mb-6"><BarChart2 className="inline-block mr-2 text-primary" size={24} />Project Overview</h2>
               <p className="text-muted-foreground mb-4">
                 This project aims to uncover the most valuable skills in the data job market, focusing on Data Analyst roles.
                 By analyzing job postings, salary data, and skill trends, I identified the skills that maximize employability and earnings. 
@@ -139,7 +140,7 @@ const DataJobMarketProject = () => {
             </section>
 
             <section id="objectives" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">2️⃣ Objectives</h2>
+              <h2 className="text-2xl font-bold mb-6"><LineChart className="inline-block mr-2 text-primary" size={24} />Objectives</h2>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li>Identify top-paying & high-demand skills for Data Analysts</li>
                 <li>Analyze salary distributions across different job titles</li>
@@ -149,7 +150,7 @@ const DataJobMarketProject = () => {
             </section>
 
             <section id="data-description" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">3️⃣ Data Description & Data Model</h2>
+              <h2 className="text-2xl font-bold mb-6"><PieChart className="inline-block mr-2 text-primary" size={24} />Data Description & Data Model</h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
                   <strong>Dataset Source:</strong> Data from Luke Barousse's Python Course on job postings.
@@ -177,7 +178,7 @@ const DataJobMarketProject = () => {
             </section>
 
             <section id="methodology" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">4️⃣ Methodology</h2>
+              <h2 className="text-2xl font-bold mb-6"><BarChart2 className="inline-block mr-2 text-primary" size={24} />Methodology</h2>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li><strong>Data Cleaning:</strong> Removed null values, formatted dates, and standardized skill names</li>
                 <li><strong>Exploratory Analysis:</strong> Used Python (Pandas, Seaborn, Matplotlib) for data insights</li>
@@ -188,7 +189,7 @@ const DataJobMarketProject = () => {
             </section>
 
             <section id="key-insights" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">5️⃣ Key Insights</h2>
+              <h2 className="text-2xl font-bold mb-6"><ScatterChart className="inline-block mr-2 text-primary" size={24} />Key Insights</h2>
               
               <div className="space-y-8">
                 {/* Key Insight 1 */}
@@ -274,11 +275,32 @@ plt.show()`}
                           <AccordionItem value="code2">
                             <AccordionTrigger>View Code</AccordionTrigger>
                             <AccordionContent>
-                              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
-                                <code>
-                                  {`# Code will be uploaded later`}
-                                </code>
-                              </pre>
+                              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                                <button 
+                                  onClick={() => copyToClipboard(`from matplotlib.ticker import PercentFormatter
+
+df_plot = df_DA_US_percent.iloc[:, :5]
+sns.lineplot(data=df_plot, dashes=False, legend='full', palette='tab10')
+
+plt.gca().yaxis.set_major_formatter(PercentFormatter(decimals=0))
+
+plt.show()`)}
+                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                                  aria-label="Copy code"
+                                >
+                                  <Copy size={16} />
+                                </button>
+                                <pre className="text-sm">
+                                  {`from matplotlib.ticker import PercentFormatter
+
+df_plot = df_DA_US_percent.iloc[:, :5]
+sns.lineplot(data=df_plot, dashes=False, legend='full', palette='tab10')
+
+plt.gca().yaxis.set_major_formatter(PercentFormatter(decimals=0))
+
+plt.show()`}
+                                </pre>
+                              </div>
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
@@ -323,11 +345,26 @@ plt.show()`}
                           <AccordionItem value="code3">
                             <AccordionTrigger>View Code</AccordionTrigger>
                             <AccordionContent>
-                              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
-                                <code>
-                                  {`# Code will be uploaded later`}
-                                </code>
-                              </pre>
+                              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                                <button 
+                                  onClick={() => copyToClipboard(`sns.boxplot(data=df_US_top6, x='salary_year_avg', y='job_title_short', order=job_order)
+
+ticks_x = plt.FuncFormatter(lambda y, pos: f'${int(y/1000)}K')
+plt.gca().xaxis.set_major_formatter(ticks_x)
+plt.show()`)}
+                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                                  aria-label="Copy code"
+                                >
+                                  <Copy size={16} />
+                                </button>
+                                <pre className="text-sm">
+                                  {`sns.boxplot(data=df_US_top6, x='salary_year_avg', y='job_title_short', order=job_order)
+
+ticks_x = plt.FuncFormatter(lambda y, pos: f'${int(y/1000)}K')
+plt.gca().xaxis.set_major_formatter(ticks_x)
+plt.show()`}
+                                </pre>
+                              </div>
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
@@ -372,11 +409,34 @@ plt.show()`}
                           <AccordionItem value="code4">
                             <AccordionTrigger>View Code</AccordionTrigger>
                             <AccordionContent>
-                              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
-                                <code>
-                                  {`# Code will be uploaded later`}
-                                </code>
-                              </pre>
+                              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                                <button 
+                                  onClick={() => copyToClipboard(`fig, ax = plt.subplots(2, 1)  
+
+# Top 10 Highest Paid Skills for Data Analysts
+sns.barplot(data=df_DA_top_pay, x='median', y=df_DA_top_pay.index, hue='median', ax=ax[0], palette='dark:b_r')
+
+# Top 10 Most In-Demand Skills for Data Analystsr')
+sns.barplot(data=df_DA_skills, x='median', y=df_DA_skills.index, hue='median', ax=ax[1], palette='light:b')
+
+plt.show()`)}
+                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                                  aria-label="Copy code"
+                                >
+                                  <Copy size={16} />
+                                </button>
+                                <pre className="text-sm">
+                                  {`fig, ax = plt.subplots(2, 1)  
+
+# Top 10 Highest Paid Skills for Data Analysts
+sns.barplot(data=df_DA_top_pay, x='median', y=df_DA_top_pay.index, hue='median', ax=ax[0], palette='dark:b_r')
+
+# Top 10 Most In-Demand Skills for Data Analystsr')
+sns.barplot(data=df_DA_skills, x='median', y=df_DA_skills.index, hue='median', ax=ax[1], palette='light:b')
+
+plt.show()`}
+                                </pre>
+                              </div>
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
@@ -421,11 +481,40 @@ plt.show()`}
                           <AccordionItem value="code5">
                             <AccordionTrigger>View Code</AccordionTrigger>
                             <AccordionContent>
-                              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
-                                <code>
-                                  {`# Code will be uploaded later`}
-                                </code>
-                              </pre>
+                              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                                <button 
+                                  onClick={() => copyToClipboard(`from matplotlib.ticker import PercentFormatter
+
+# Create a scatter plot
+scatter = sns.scatterplot(
+    data=df_DA_skills_tech_high_demand,
+    x='skill_percent',
+    y='median_salary',
+    hue='technology',  # Color by technology
+    palette='bright',  # Use a bright palette for distinct colors
+    legend='full'  # Ensure the legend is shown
+)
+plt.show()`)}
+                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                                  aria-label="Copy code"
+                                >
+                                  <Copy size={16} />
+                                </button>
+                                <pre className="text-sm">
+                                  {`from matplotlib.ticker import PercentFormatter
+
+# Create a scatter plot
+scatter = sns.scatterplot(
+    data=df_DA_skills_tech_high_demand,
+    x='skill_percent',
+    y='median_salary',
+    hue='technology',  # Color by technology
+    palette='bright',  # Use a bright palette for distinct colors
+    legend='full'  # Ensure the legend is shown
+)
+plt.show()`}
+                                </pre>
+                              </div>
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
@@ -455,7 +544,7 @@ plt.show()`}
             </section>
 
             <section id="challenges" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">6️⃣ Challenges & Learnings</h2>
+              <h2 className="text-2xl font-bold mb-6"><Percent className="inline-block mr-2 text-primary" size={24} />Challenges & Learnings</h2>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li><strong>Handling Data Variations:</strong> Managing different job titles across datasets</li>
                 <li><strong>Visual Complexity:</strong> Designing effective salary & demand comparisons</li>
@@ -464,7 +553,7 @@ plt.show()`}
             </section>
 
             <section id="project-files" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">7️⃣ Project Files & Links</h2>
+              <h2 className="text-2xl font-bold mb-6"><BarChart2 className="inline-block mr-2 text-primary" size={24} />Project Files & Links</h2>
               <div className="flex items-start gap-2 text-muted-foreground">
                 <ExternalLink className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <div>
