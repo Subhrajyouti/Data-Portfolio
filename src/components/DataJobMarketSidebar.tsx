@@ -3,23 +3,23 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Eye, Target, Database, FlaskConical, LightBulb, GraduationCap, FileText } from "lucide-react";
 import { useState } from "react";
 
 type SectionType = {
   id: string;
   title: string;
-  icon?: string;
+  icon: React.ReactNode;
 };
 
 const SECTIONS: SectionType[] = [
-  { id: "overview", title: "Project Overview" },
-  { id: "objectives", title: "Objectives" },
-  { id: "data-description", title: "Data Description" },
-  { id: "methodology", title: "Methodology" },
-  { id: "key-insights", title: "Key Insights" },
-  { id: "challenges", title: "Challenges & Learnings" },
-  { id: "project-files", title: "Project Files" }
+  { id: "overview", title: "Project Overview", icon: <Eye className="h-4 w-4 mr-1" /> },
+  { id: "objectives", title: "Objectives", icon: <Target className="h-4 w-4 mr-1" /> },
+  { id: "data-description", title: "Data Description", icon: <Database className="h-4 w-4 mr-1" /> },
+  { id: "methodology", title: "Methodology", icon: <FlaskConical className="h-4 w-4 mr-1" /> },
+  { id: "key-insights", title: "Key Insights", icon: <LightBulb className="h-4 w-4 mr-1" /> },
+  { id: "challenges", title: "Challenges & Learnings", icon: <GraduationCap className="h-4 w-4 mr-1" /> },
+  { id: "project-files", title: "Project Files", icon: <FileText className="h-4 w-4 mr-1" /> }
 ];
 
 type DataJobMarketSidebarProps = {
@@ -70,11 +70,12 @@ const DataJobMarketSidebar = ({ sticky = false }: DataJobMarketSidebarProps) => 
                   variant="ghost"
                   size="sm"
                   className={cn(
-                    "whitespace-nowrap rounded-full",
+                    "whitespace-nowrap rounded-full flex items-center",
                     currentSection === section.id && "bg-primary text-primary-foreground"
                   )}
                   onClick={() => scrollToSection(section.id)}
                 >
+                  {section.icon}
                   {section.title}
                 </Button>
               ))}
