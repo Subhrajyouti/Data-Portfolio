@@ -274,11 +274,36 @@ plt.show()`}
                           <AccordionItem value="code2">
                             <AccordionTrigger>View Code</AccordionTrigger>
                             <AccordionContent>
-                              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
-                                <code>
-                                  {`# Code will be uploaded later`}
-                                </code>
-                              </pre>
+                              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                                <button 
+                                  onClick={() => copyToClipboard(
+                                    from matplotlib.ticker import PercentFormatter
+                                    
+                                    df_plot = df_DA_US_percent.iloc[:, :5]
+                                    sns.lineplot(data=df_plot, dashes=False, legend='full', palette='tab10')
+                                    
+                                    plt.gca().yaxis.set_major_formatter(PercentFormatter(decimals=0))
+                                    
+                                    plt.show()
+                                    )}
+                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                                  aria-label="Copy code"
+                                >
+                                  <Copy size={16} />
+                                </button>
+                                <pre className="text-sm">
+                                  {
+from matplotlib.ticker import PercentFormatter
+
+df_plot = df_DA_US_percent.iloc[:, :5]
+sns.lineplot(data=df_plot, dashes=False, legend='full', palette='tab10')
+
+plt.gca().yaxis.set_major_formatter(PercentFormatter(decimals=0))
+
+plt.show()
+}
+                                </pre>
+                              </div>
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
