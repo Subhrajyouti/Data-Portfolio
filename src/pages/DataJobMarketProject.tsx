@@ -127,7 +127,7 @@ const DataJobMarketProject = () => {
               <h2 className="text-2xl font-bold mb-6">1️⃣ Project Overview</h2>
               <p className="text-muted-foreground mb-4">
                 This project aims to uncover the most valuable skills in the data job market, focusing on Data Analyst roles.
-                By analyzing job postings, salary data, and skill trends, I identified the skills that maximize employability and earnings. 
+                By analyzing job  postings, salary data, and skill trends, I identified the skills that maximize employability and earnings. 
                 Using Python, Excel, and visualization techniques, I examined how salaries and skill demand fluctuate over time.
               </p>
             </section>
