@@ -1,47 +1,40 @@
 
-import { useState, useEffect } from "react";
+import HeroSection from "@/components/HeroSection";
+import IntroVideo from "@/components/IntroVideo";
+import AboutSection from "@/components/AboutSection";
+import ProjectsSection from "@/components/ProjectsSection";
+import SkillsSection from "@/components/SkillsSection";
+import ResumeSection from "@/components/ResumeSection";
+import ContactSection from "@/components/ContactSection";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { useEffect } from "react";
 
 const Index = () => {
-  const [greeting, setGreeting] = useState("Hello");
-  
   useEffect(() => {
-    // Simple animation to change the greeting after 2 seconds
-    const timer = setTimeout(() => {
-      setGreeting("Hello World");
-    }, 2000);
-    
-    return () => clearTimeout(timer);
+    // Smooth scroll to section if URL has hash
+    if (window.location.hash) {
+      const id = window.location.hash.substring(1);
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-background to-secondary p-4">
-      <div className="text-center max-w-3xl mx-auto">
-        <div className="relative mb-8">
-          <h1 className="text-7xl md:text-9xl font-bold hello-world-text animate-float">
-            {greeting}
-          </h1>
-          {greeting === "Hello World" && (
-            <span className="inline-block animate-wave origin-bottom-right text-6xl absolute -right-10 top-0">
-              👋
-            </span>
-          )}
-        </div>
-        
-        <p className="text-xl md:text-2xl text-muted-foreground mt-8 max-w-lg mx-auto">
-          Welcome to my simple yet beautiful website. This is a minimalist design with a touch of animation.
-        </p>
-        
-        <div className="mt-12 p-6 bg-card rounded-lg shadow-lg border border-border">
-          <h2 className="text-2xl font-semibold mb-4">What's Next?</h2>
-          <p className="text-card-foreground">
-            This is just the beginning. You can build upon this simple foundation to create something amazing!
-          </p>
-        </div>
-      </div>
-      
-      <footer className="mt-auto py-6 text-muted-foreground text-sm">
-        Made with ❤️ using React & Tailwind CSS
-      </footer>
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main>
+        <HeroSection />
+        <IntroVideo />
+        <AboutSection />
+        <ProjectsSection />
+        <SkillsSection />
+        <ResumeSection />
+        <ContactSection />
+      </main>
+      <Footer />
     </div>
   );
 };
