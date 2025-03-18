@@ -202,31 +202,16 @@ const DataJobMarketProject = () => {
                       <div className="p-4 space-y-4">
                         <Accordion type="single" collapsible className="mb-4">
                           <AccordionItem value="code1">
-                            <AccordionTrigger>View Code
-                            </AccordionTrigger>
+                            <AccordionTrigger>View Code</AccordionTrigger>
                             <AccordionContent>
-                                      <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
-                                                        <button 
-                                                          onClick={() => copyToClipboard(`SELECT DATE_TRUNC('month', date) AS month, 
-                                   SUM(fare_amount) AS total_revenue
-                            FROM fact_trips
-                            GROUP BY month
-                            ORDER BY month;`)}
-                                                          className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
-                                                          aria-label="Copy code"
-                                                        >
-                                                          <Copy size={16} />
-                                                        </button>
-                                                        <pre className="text-sm">
-                                                          {`SELECT DATE_TRUNC('month', date) AS month, 
-                                   SUM(fare_amount) AS total_revenue
-                            FROM fact_trips
-                            GROUP BY month
-                            ORDER BY month;`}
-                                                        </pre>
-                                                      </div>
-                                                    </AccordionContent>
-                                                  </AccordionItem>
+                              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
+                                <code>
+                                  {`# Code will be uploaded later`}
+                                </code>
+                              </pre>
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
                         
                         <div className="rounded-lg overflow-hidden border">
                           <img 
