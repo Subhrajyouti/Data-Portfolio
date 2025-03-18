@@ -184,7 +184,7 @@ const DataJobMarketProject = () => {
                 
                 <div className="mt-6">
                   <img 
-                    src="/data_modelling.png" 
+                    src="/data.jpg" 
                     alt="Data Model" 
                     className="w-full max-w-xl rounded-lg border border-border"
                   />
