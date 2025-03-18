@@ -1,6 +1,20 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Github, ChevronDown, ChevronUp, ExternalLink, Copy } from "lucide-react";
+import { 
+  Github, 
+  ChevronDown, 
+  ChevronUp, 
+  ExternalLink,
+  Eye,
+  Target,
+  Database,
+  BarChart3,
+  LineChart,
+  BarChart2,
+  LightbulbIcon,
+  Unlink,
+  FileText
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -9,7 +23,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { toast } from "sonner";
 
 const DataJobMarketProject = () => {
   const location = useLocation();
@@ -57,12 +70,6 @@ const DataJobMarketProject = () => {
       ...prev,
       [key]: !prev[key]
     }));
-  };
-
-  // Function to copy code to clipboard
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success("Code copied to clipboard!");
   };
 
   return (
@@ -130,7 +137,10 @@ const DataJobMarketProject = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">
             <section id="overview" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">1️⃣ Project Overview</h2>
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <Eye className="h-6 w-6 text-primary" />
+                Project Overview
+              </h2>
               <p className="text-muted-foreground mb-4">
                 This project aims to uncover the most valuable skills in the data job market, focusing on Data Analyst roles.
                 By analyzing job postings, salary data, and skill trends, I identified the skills that maximize employability and earnings. 
@@ -139,7 +149,10 @@ const DataJobMarketProject = () => {
             </section>
 
             <section id="objectives" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">2️⃣ Objectives</h2>
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <Target className="h-6 w-6 text-primary" />
+                Objectives
+              </h2>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li>Identify top-paying & high-demand skills for Data Analysts</li>
                 <li>Analyze salary distributions across different job titles</li>
@@ -149,7 +162,10 @@ const DataJobMarketProject = () => {
             </section>
 
             <section id="data-description" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">3️⃣ Data Description & Data Model</h2>
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <Database className="h-6 w-6 text-primary" />
+                Data Description & Data Model
+              </h2>
               <div className="space-y-4 text-muted-foreground">
                 <p>
                   <strong>Dataset Source:</strong> Data from Luke Barousse's Python Course on job postings.
@@ -177,7 +193,10 @@ const DataJobMarketProject = () => {
             </section>
 
             <section id="methodology" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">4️⃣ Methodology</h2>
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <BarChart3 className="h-6 w-6 text-primary" />
+                Methodology
+              </h2>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li><strong>Data Cleaning:</strong> Removed null values, formatted dates, and standardized skill names</li>
                 <li><strong>Exploratory Analysis:</strong> Used Python (Pandas, Seaborn, Matplotlib) for data insights</li>
@@ -188,7 +207,10 @@ const DataJobMarketProject = () => {
             </section>
 
             <section id="key-insights" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">5️⃣ Key Insights</h2>
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <LightbulbIcon className="h-6 w-6 text-primary" />
+                Key Insights
+              </h2>
               
               <div className="space-y-8">
                 {/* Key Insight 1 */}
@@ -196,7 +218,10 @@ const DataJobMarketProject = () => {
                   <Collapsible open={openInsights.insight1} onOpenChange={() => toggleInsight('insight1')}>
                     <CollapsibleTrigger asChild>
                       <div className="flex justify-between items-center p-4 cursor-pointer bg-muted/40 hover:bg-muted/60">
-                        <h3 className="text-lg font-medium">1️⃣ What are the most demanded skills for the top 3 most popular data roles?</h3>
+                        <h3 className="text-lg font-medium flex items-center gap-2">
+                          <BarChart2 className="h-5 w-5 text-primary" />
+                          What are the most demanded skills for the top 3 most popular data roles?
+                        </h3>
                         {openInsights.insight1 ? 
                           <ChevronUp className="h-5 w-5 text-muted-foreground" /> : 
                           <ChevronDown className="h-5 w-5 text-muted-foreground" />
@@ -210,26 +235,11 @@ const DataJobMarketProject = () => {
                           <AccordionItem value="code1">
                             <AccordionTrigger>View Code</AccordionTrigger>
                             <AccordionContent>
-                              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
-                                <button 
-                                  onClick={() => copyToClipboard(`fig, ax = plt.subplots(len(job_titles), 1)
-for i, job_title in enumerate(job_titles):
-    df_plot = df_skills_perc[df_skills_perc['job_title_short'] == job_title].head(5)[::-1]
-    sns.barplot(data=df_plot, x='skill_percent', y='job_skills', ax=ax[i], hue='skill_count', palette='dark:b_r')
-plt.show()`)}
-                                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
-                                  aria-label="Copy code"
-                                >
-                                  <Copy size={16} />
-                                </button>
-                                <pre className="text-sm">
-                                  {`fig, ax = plt.subplots(len(job_titles), 1)
-for i, job_title in enumerate(job_titles):
-    df_plot = df_skills_perc[df_skills_perc['job_title_short'] == job_title].head(5)[::-1]
-    sns.barplot(data=df_plot, x='skill_percent', y='job_skills', ax=ax[i], hue='skill_count', palette='dark:b_r')
-plt.show()`}
-                                </pre>
-                              </div>
+                              <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
+                                <code>
+                                  {`# Code will be uploaded later`}
+                                </code>
+                              </pre>
                             </AccordionContent>
                           </AccordionItem>
                         </Accordion>
@@ -260,7 +270,10 @@ plt.show()`}
                   <Collapsible open={openInsights.insight2} onOpenChange={() => toggleInsight('insight2')}>
                     <CollapsibleTrigger asChild>
                       <div className="flex justify-between items-center p-4 cursor-pointer bg-muted/40 hover:bg-muted/60">
-                        <h3 className="text-lg font-medium">2️⃣ How are in-demand skills trending for Data Analysts?</h3>
+                        <h3 className="text-lg font-medium flex items-center gap-2">
+                          <LineChart className="h-5 w-5 text-primary" />
+                          How are in-demand skills trending for Data Analysts?
+                        </h3>
                         {openInsights.insight2 ? 
                           <ChevronUp className="h-5 w-5 text-muted-foreground" /> : 
                           <ChevronDown className="h-5 w-5 text-muted-foreground" />
@@ -309,7 +322,10 @@ plt.show()`}
                   <Collapsible open={openInsights.insight3} onOpenChange={() => toggleInsight('insight3')}>
                     <CollapsibleTrigger asChild>
                       <div className="flex justify-between items-center p-4 cursor-pointer bg-muted/40 hover:bg-muted/60">
-                        <h3 className="text-lg font-medium">3️⃣ How well do jobs and skills pay for Data Analysts?</h3>
+                        <h3 className="text-lg font-medium flex items-center gap-2">
+                          <BarChart2 className="h-5 w-5 text-primary" />
+                          How well do jobs and skills pay for Data Analysts?
+                        </h3>
                         {openInsights.insight3 ? 
                           <ChevronUp className="h-5 w-5 text-muted-foreground" /> : 
                           <ChevronDown className="h-5 w-5 text-muted-foreground" />
@@ -358,7 +374,10 @@ plt.show()`}
                   <Collapsible open={openInsights.insight4} onOpenChange={() => toggleInsight('insight4')}>
                     <CollapsibleTrigger asChild>
                       <div className="flex justify-between items-center p-4 cursor-pointer bg-muted/40 hover:bg-muted/60">
-                        <h3 className="text-lg font-medium">4️⃣ What are the highest-paid and most in-demand skills for Data Analysts?</h3>
+                        <h3 className="text-lg font-medium flex items-center gap-2">
+                          <LineChart className="h-5 w-5 text-primary" />
+                          What are the highest-paid and most in-demand skills for Data Analysts?
+                        </h3>
                         {openInsights.insight4 ? 
                           <ChevronUp className="h-5 w-5 text-muted-foreground" /> : 
                           <ChevronDown className="h-5 w-5 text-muted-foreground" />
@@ -407,7 +426,10 @@ plt.show()`}
                   <Collapsible open={openInsights.insight5} onOpenChange={() => toggleInsight('insight5')}>
                     <CollapsibleTrigger asChild>
                       <div className="flex justify-between items-center p-4 cursor-pointer bg-muted/40 hover:bg-muted/60">
-                        <h3 className="text-lg font-medium">5️⃣ What are the most optimal skills to learn for Data Analysts?</h3>
+                        <h3 className="text-lg font-medium flex items-center gap-2">
+                          <BarChart2 className="h-5 w-5 text-primary" />
+                          What are the most optimal skills to learn for Data Analysts?
+                        </h3>
                         {openInsights.insight5 ? 
                           <ChevronUp className="h-5 w-5 text-muted-foreground" /> : 
                           <ChevronDown className="h-5 w-5 text-muted-foreground" />
@@ -455,7 +477,10 @@ plt.show()`}
             </section>
 
             <section id="challenges" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">6️⃣ Challenges & Learnings</h2>
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <Unlink className="h-6 w-6 text-primary" />
+                Challenges & Learnings
+              </h2>
               <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                 <li><strong>Handling Data Variations:</strong> Managing different job titles across datasets</li>
                 <li><strong>Visual Complexity:</strong> Designing effective salary & demand comparisons</li>
@@ -464,7 +489,10 @@ plt.show()`}
             </section>
 
             <section id="project-files" className="mb-16">
-              <h2 className="text-2xl font-bold mb-6">7️⃣ Project Files & Links</h2>
+              <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                <FileText className="h-6 w-6 text-primary" />
+                Project Files & Links
+              </h2>
               <div className="flex items-start gap-2 text-muted-foreground">
                 <ExternalLink className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <div>
