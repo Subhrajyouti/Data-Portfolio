@@ -18,10 +18,3 @@ export const getAssetPath = (path: string): string => {
   // In production, use the base path from Vite config
   return `${import.meta.env.BASE_URL}${cleanPath}`;
 };
-
-/**
- * For PDF files and other documents that might be downloaded
- */
-export const getDocumentPath = (path: string): string => {
-  return getAssetPath(path);
-};
