@@ -77,11 +77,13 @@ const ProjectCard = ({ project }: { project: Project }) => {
     setImageLoaded(true);
   };
 
-  // Use Link component for internal navigation with HashRouter
+  // Use a tag instead of Link component to open in new tab
   return (
-    <Link 
-      to={projectUrl}
+    <a 
+      href={`#${projectUrl}`}
       className="group block h-full"
+      target="_blank"
+      rel="noopener noreferrer"
     >
       <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-500 bg-background border border-border/50 hover:border-primary/30 hover:-translate-y-2 shadow-md">
         <div className="relative overflow-hidden aspect-video">
@@ -123,7 +125,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
           </div>
         </div>
       </Card>
-    </Link>
+    </a>
   );
 };
 
