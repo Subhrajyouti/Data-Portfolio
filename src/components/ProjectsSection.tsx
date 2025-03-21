@@ -20,7 +20,7 @@ const projects: Project[] = [
     id: 9,
     title: "Monday Coffee Business Expansion Analysis",
     description: "Analyzing city performance to determine the best locations for business expansion using data-driven insights",
-    image: "/coffee1.jpg",
+    image: "./coffee1.jpg",
     tags: ["SQL", "Data Analysis", "Weighted Scoring", "Decision Making"],
     slug: "new-project"
   },
@@ -28,7 +28,7 @@ const projects: Project[] = [
     id: 8,
     title: "Data Job Market Analysis",
     description: "An in-depth analysis of data science job market trends, salary distributions, and required skills across different industries",
-    image: "/data_science.jpg",
+    image: "./data_science.jpg",
     tags: ["Python", "Pandas", "Data Visualization", "Job Market Analysis"],
     slug: "data-job-market-analysis"
   },
@@ -36,7 +36,7 @@ const projects: Project[] = [
     id: 7,
     title: "GoodCabs Performance Analysis & Dashboard",
     description: "A data-driven analysis of GoodCabs' operations using SQL, Power BI, and PostgreSQL to provide strategic insights to the Chief of Operations",
-    image: "/alexander-red-S9qxkJN0f4Q-unsplash.jpg",
+    image: "./alexander-red-S9qxkJN0f4Q-unsplash.jpg",
     tags: ["Power BI", "PostgreSQL", "SQL", "Data Analysis"],
     slug: "goodcabs-analysis"
   }
