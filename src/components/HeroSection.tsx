@@ -5,9 +5,15 @@ import { useEffect, useState } from "react";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
+    
+    // Preload the profile image
+    const img = new Image();
+    img.src = "/profile-photo.jpg";
+    img.onload = () => setImageLoaded(true);
   }, []);
 
   return (
@@ -63,7 +69,7 @@ const HeroSection = () => {
             </div>
           </div>
           
-          {/* Profile Photo with blended effect and animation */}
+          {/* Profile Photo with better loading strategy */}
           <div className={`md:w-1/2 flex justify-center mt-12 md:mt-0 transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
           }`}>
@@ -71,13 +77,23 @@ const HeroSection = () => {
               {/* Gradient background glow effect */}
               <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-primary/30 to-primary/10 rounded-full blur-xl opacity-70 group-hover:opacity-100 animate-pulse-slow transition-opacity duration-1000"></div>
               
-              {/* Image container */}
+              {/* Image container with better loading strategy */}
               <div className="relative h-64 w-64 md:h-80 md:w-80 overflow-hidden rounded-full">
                 <div className="absolute inset-0 bg-gradient-to-tr from-background/80 to-transparent opacity-50 mix-blend-overlay z-10"></div>
+                
+                {/* Show placeholder or skeleton while image loads */}
+                {!imageLoaded && (
+                  <div className="absolute inset-0 bg-muted animate-pulse rounded-full"></div>
+                )}
+                
                 <img 
                   src="/profile-photo.jpg" 
                   alt="Subhrajyoti Mahanta" 
-                  className="w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105 group-hover:brightness-110"
+                  className={`w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105 group-hover:brightness-110 ${
+                    imageLoaded ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  onLoad={() => setImageLoaded(true)}
+                  loading="eager" // Load this image immediately as it's above the fold
                 />
                 
                 {/* Edge blending overlay */}

@@ -237,7 +237,7 @@ const DataJobMarketProject = () => {
                             <AccordionContent>
                               <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
                                 <code>
-                                  {`# Code will be uploaded later`}
+                                  {`https://github.com/Subhrajyouti/Data-Science-Job-Market-Research-with-Python/tree/main`}
                                 </code>
                               </pre>
                             </AccordionContent>
@@ -289,7 +289,7 @@ const DataJobMarketProject = () => {
                             <AccordionContent>
                               <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
                                 <code>
-                                  {`# Code will be uploaded later`}
+                                  {`https://github.com/Subhrajyouti/Data-Science-Job-Market-Research-with-Python/tree/main`}
                                 </code>
                               </pre>
                             </AccordionContent>
@@ -341,7 +341,7 @@ const DataJobMarketProject = () => {
                             <AccordionContent>
                               <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
                                 <code>
-                                  {`# Code will be uploaded later`}
+                                  {`https://github.com/Subhrajyouti/Data-Science-Job-Market-Research-with-Python/tree/main`}
                                 </code>
                               </pre>
                             </AccordionContent>
@@ -393,7 +393,7 @@ const DataJobMarketProject = () => {
                             <AccordionContent>
                               <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
                                 <code>
-                                  {`# Code will be uploaded later`}
+                                  {`https://github.com/Subhrajyouti/Data-Science-Job-Market-Research-with-Python/tree/main`}
                                 </code>
                               </pre>
                             </AccordionContent>
@@ -445,7 +445,7 @@ const DataJobMarketProject = () => {
                             <AccordionContent>
                               <pre className="bg-muted p-4 rounded-md overflow-x-auto text-xs">
                                 <code>
-                                  {`# Code will be uploaded later`}
+                                  {`https://github.com/Subhrajyouti/Data-Science-Job-Market-Research-with-Python/tree/main`}
                                 </code>
                               </pre>
                             </AccordionContent>
