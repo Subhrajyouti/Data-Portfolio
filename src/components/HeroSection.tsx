@@ -2,6 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Download } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getAssetPath } from "@/utils/assetPath";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -12,7 +14,7 @@ const HeroSection = () => {
     
     // Preload the profile image
     const img = new Image();
-    img.src = "/profile-photo.jpg";
+    img.src = getAssetPath("/profile-photo.jpg");
     img.onload = () => setImageLoaded(true);
   }, []);
 
@@ -53,14 +55,14 @@ const HeroSection = () => {
                   asChild
                   className="rounded-md bg-primary text-white hover:bg-primary/90 transition-all"
                 >
-                  <a href="#projects">View Projects</a>
+                  <Link to="#projects">View Projects</Link>
                 </Button>
                 <Button
                   asChild
                   variant="outline"
                   className="rounded-md border-primary/30 text-foreground hover:bg-primary/10 transition-all gap-2"
                 >
-                  <a href="/resume.pdf" download>
+                  <a href={getAssetPath("/resume.pdf")} download>
                     <Download className="h-4 w-4" />
                     Download Resume
                   </a>
@@ -87,7 +89,7 @@ const HeroSection = () => {
                 )}
                 
                 <img 
-                  src="/profile-photo.jpg" 
+                  src={getAssetPath("/profile-photo.jpg")}
                   alt="Subhrajyoti Mahanta" 
                   className={`w-full h-full object-cover transition-all duration-700 ease-in-out group-hover:scale-105 group-hover:brightness-110 ${
                     imageLoaded ? 'opacity-100' : 'opacity-0'

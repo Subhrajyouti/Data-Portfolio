@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useTheme } from "@/hooks/useTheme";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { getAssetPath } from "@/utils/assetPath";
 
 interface Project {
   id: number;
@@ -20,7 +21,7 @@ const projects: Project[] = [
     id: 9,
     title: "Monday Coffee Business Expansion Analysis",
     description: "Analyzing city performance to determine the best locations for business expansion using data-driven insights",
-    image: "./coffee1.jpg",
+    image: "/coffee1.jpg",
     tags: ["SQL", "Data Analysis", "Weighted Scoring", "Decision Making"],
     slug: "new-project"
   },
@@ -28,7 +29,7 @@ const projects: Project[] = [
     id: 8,
     title: "Data Job Market Analysis",
     description: "An in-depth analysis of data science job market trends, salary distributions, and required skills across different industries",
-    image: "./data_science.jpg",
+    image: "/data_science.jpg",
     tags: ["Python", "Pandas", "Data Visualization", "Job Market Analysis"],
     slug: "data-job-market-analysis"
   },
@@ -36,7 +37,7 @@ const projects: Project[] = [
     id: 7,
     title: "GoodCabs Performance Analysis & Dashboard",
     description: "A data-driven analysis of GoodCabs' operations using SQL, Power BI, and PostgreSQL to provide strategic insights to the Chief of Operations",
-    image: "./alexander-red-S9qxkJN0f4Q-unsplash.jpg",
+    image: "/alexander-red-S9qxkJN0f4Q-unsplash.jpg",
     tags: ["Power BI", "PostgreSQL", "SQL", "Data Analysis"],
     slug: "goodcabs-analysis"
   }
@@ -76,13 +77,11 @@ const ProjectCard = ({ project }: { project: Project }) => {
     setImageLoaded(true);
   };
 
-  // Use anchor tag to open in new tab instead of Link component
+  // Use Link component for internal navigation with HashRouter
   return (
-    <a 
-      href={projectUrl}
+    <Link 
+      to={projectUrl}
       className="group block h-full"
-      target="_blank"
-      rel="noopener noreferrer"
     >
       <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-500 bg-background border border-border/50 hover:border-primary/30 hover:-translate-y-2 shadow-md">
         <div className="relative overflow-hidden aspect-video">
@@ -91,9 +90,9 @@ const ProjectCard = ({ project }: { project: Project }) => {
             <div className="absolute inset-0 bg-muted animate-pulse"></div>
           )}
           
-          {/* The actual image with loading optimizations */}
+          {/* The actual image with loading optimizations and correct path */}
           <img
-            src={project.image}
+            src={getAssetPath(project.image)}
             alt={project.title}
             className={`object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
@@ -124,7 +123,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
           </div>
         </div>
       </Card>
-    </a>
+    </Link>
   );
 };
 
