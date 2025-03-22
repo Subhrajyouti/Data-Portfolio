@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Download } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -50,10 +51,9 @@ const HeroSection = () => {
               
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <Button
-                  asChild
                   className="rounded-md bg-primary text-white hover:bg-primary/90 transition-all"
                 >
-                  <a href="#projects">View Projects</a>
+                  <Link to="/#projects">View Projects</Link>
                 </Button>
                 <Button
                   asChild
