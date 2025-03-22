@@ -33,35 +33,52 @@ import { toast } from "sonner";
 
 // Custom sidebar navigation for Monday Coffee project
 const MondayCoffeeSidebar = () => {
+  // Add click handler for smooth scrolling
+  const handleNavClick = (e) => {
+    e.preventDefault();
+    const href = e.currentTarget.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      const id = href.substring(1);
+      const element = document.getElementById(id);
+      if (element) {
+        const yOffset = -100; // Adjust offset as needed
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+        // Update URL hash without triggering a scroll
+        window.history.pushState(null, '', href);
+      }
+    }
+  };
+
   return (
     <div className="sticky top-[60px] z-10 w-full bg-background/95 backdrop-blur-sm border-b">
       <div className="container max-w-7xl mx-auto px-4">
         <div className="flex overflow-x-auto py-2 gap-4 no-scrollbar">
-          <a href="#overview" className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
+          <a href="#overview" onClick={handleNavClick} className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
             <Eye className="h-4 w-4 text-blue-500" />
             Overview
           </a>
-          <a href="#objective" className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
+          <a href="#objective" onClick={handleNavClick} className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
             <Target className="h-4 w-4 text-blue-500" />
             Objective
           </a>
-          <a href="#data-setup" className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
+          <a href="#data-setup" onClick={handleNavClick} className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
             <Database className="h-4 w-4 text-blue-500" />
             Data Description
           </a>
-          <a href="#methodology" className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
+          <a href="#methodology" onClick={handleNavClick} className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
             <ListChecks className="h-4 w-4 text-blue-500" />
             Methodology
           </a>
-          <a href="#top-cities" className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
+          <a href="#top-cities" onClick={handleNavClick} className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
             <Rocket className="h-4 w-4 text-blue-500" />
             Top Cities
           </a>
-          <a href="#ad-hoc-requests" className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
+          <a href="#ad-hoc-requests" onClick={handleNavClick} className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
             <Database className="h-4 w-4 text-blue-500" />
             Ad Hoc Requests
           </a>
-          <a href="#conclusion" className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
+          <a href="#conclusion" onClick={handleNavClick} className="whitespace-nowrap text-sm font-bold hover:text-primary transition-colors px-2 py-2 flex items-center gap-1.5">
             <CheckCircle2 className="h-4 w-4 text-blue-500" />
             Conclusion
           </a>
@@ -90,28 +107,33 @@ const NewProject = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Fix the scroll offset by changing the value from -150 to a smaller number
+  // Handle hash links when page loads
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash) {
-        const id = hash.replace('#', '');
-        const element = document.getElementById(id);
-        if (element) {
-          // Reduce the offset to prevent the title from scrolling too far up
-          const yOffset = -170; // Changed from -150 to -80
-          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }
+    // Function to handle scrolling to element by ID
+    const scrollToElement = (id) => {
+      const element = document.getElementById(id);
+      if (element) {
+        const yOffset = -100; // Consistent offset
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
       }
     };
 
     // Handle initial hash if present
     if (window.location.hash) {
-      setTimeout(handleHashChange, 100);
+      const id = window.location.hash.substring(1);
+      // Small delay to ensure DOM is fully loaded
+      setTimeout(() => scrollToElement(id), 300);
     }
 
-    // Add event listener for future hash changes
+    // Add event listener for hash changes
+    const handleHashChange = () => {
+      if (window.location.hash) {
+        const id = window.location.hash.substring(1);
+        scrollToElement(id);
+      }
+    };
+    
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
