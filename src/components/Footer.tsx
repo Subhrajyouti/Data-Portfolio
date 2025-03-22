@@ -67,7 +67,7 @@ const Footer = () => {
           <p>© {currentYear} Subhrajyoti Mahanta. All rights reserved.</p>
           <div className="mt-3 md:mt-0 flex items-center">
             <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
-              {viewCount.toLocaleString()} Page Views
+            Website Visit Counts {viewCount.toLocaleString()} 
             </span>
           </div>
         </div>
