@@ -80,7 +80,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
   // Use a tag instead of Link component to open in new tab
   return (
     <a 
-      href={`#${projectUrl}`}
+      href={projectUrl}
       className="group block h-full"
       target="_blank"
       rel="noopener noreferrer"
