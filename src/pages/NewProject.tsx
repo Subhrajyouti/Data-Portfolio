@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { 
@@ -129,7 +130,7 @@ const NewProject = () => {
         {/* Hero Section with Cover Image */}
         <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
           <img 
-            src={getAssetPath("/coffee1.jpg")} 
+            src="/coffee1.jpg" 
             alt="Monday Coffee Business Analysis" 
             className="w-full h-full object-cover brightness-[0.7]"
           />
@@ -289,7 +290,7 @@ const NewProject = () => {
                 
                 <div className="bg-card/5 p-2 rounded-md overflow-hidden">
                   <img 
-                    src={getAssetPath("/erd.png")} 
+                    src="/erd.png" 
                     alt="Data Model Schema" 
                     className="w-full h-auto rounded-md shadow-md border border-border/50" 
                   />
@@ -422,7 +423,7 @@ const NewProject = () => {
 
                 <div className="bg-card/5 p-2 rounded-md overflow-hidden">
                   <img 
-                    src={getAssetPath("/cityscore.png")} 
+                    src="/cityscore.png" 
                     alt="Final Visualization" 
                     className="w-full h-auto rounded-md shadow-md border border-border/50" 
                   />
@@ -482,7 +483,7 @@ ORDER BY 2 DESC;`}
         <div className="mb-4">
           <h4 className="text-base font-medium mb-2">Result:</h4>
           <img 
-            src={getAssetPath("/cq1.png")} 
+            src="/cq1.png" 
             alt="Coffee Consumers Count Query Result" 
             className="w-full rounded-md border border-border/50" 
           />
@@ -561,7 +562,7 @@ ORDER BY 2 DESC;`}
         <div className="mb-4">
           <h4 className="text-base font-medium mb-2">Result:</h4>
           <img 
-            src={getAssetPath("/cq2.png")} 
+            src="/cq2.png" 
             alt="Total Revenue Query Result" 
             className="w-full rounded-md border border-border/50" 
           />
@@ -618,7 +619,7 @@ ORDER BY 2 DESC;`}
         <div className="mb-4">
           <h4 className="text-base font-medium mb-2">Result:</h4>
           <img 
-            src={getAssetPath("/cq3.png")} 
+            src="/cq3.png" 
             alt="Sales Count Query Result" 
             className="w-full rounded-md border border-border/50" 
           />
@@ -656,3 +657,701 @@ JOIN customers AS c ON s.customer_id = c.customer_id
 JOIN city AS ci ON ci.city_id = c.city_id
 GROUP BY 1
 ORDER BY 2 DESC;`)}
+                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                  aria-label="Copy code"
+                >
+                  <Copy size={16} />
+                </button>
+                <pre className="text-sm">
+{`SELECT 
+    ci.city_name,
+    SUM(s.total) AS total_revenue,
+    COUNT(DISTINCT s.customer_id) AS total_cx,
+    ROUND(SUM(s.total)::NUMERIC / COUNT(DISTINCT s.customer_id)::NUMERIC, 2) AS avg_sale_pr_cx
+FROM sales AS s
+JOIN customers AS c ON s.customer_id = c.customer_id
+JOIN city AS ci ON ci.city_id = c.city_id
+GROUP BY 1
+ORDER BY 2 DESC;`}
+                </pre>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        
+        <div className="mb-4">
+          <h4 className="text-base font-medium mb-2">Result:</h4>
+          <img 
+            src="/cq4.png" 
+            alt="Average Sales Amount Query Result" 
+            className="w-full rounded-md border border-border/50" 
+          />
+        </div>
+        
+         
+      </CollapsibleContent>
+    </Collapsible>
+    <Collapsible className="border border-border/50 rounded-md">
+      <CollapsibleTrigger className="flex justify-between items-center w-full p-4 text-left hover:bg-accent/10 transition-colors">
+        <h3 className="text-lg font-medium">🔎 Q5: City Population and Coffee Consumers</h3>
+        <div className="text-muted-foreground">
+          <ChevronDown className="h-5 w-5" />
+        </div>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="p-6 pt-0 border-t border-border/50">
+        <p className="text-muted-foreground mb-4">Provide a list of cities along with their populations and estimated coffee consumers.</p>
+        
+        <Accordion type="single" collapsible className="w-full mb-4">
+          <AccordionItem value="question-5-sql">
+            <AccordionTrigger className="hover:text-primary text-base font-medium py-3">
+              SQL Query
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                <button 
+                  onClick={() => copyToClipboard(`WITH city_table AS 
+(
+	SELECT 
+		city_name,
+		ROUND((population * 0.25)/1000000, 2) AS coffee_consumers
+	FROM city
+),
+customers_table AS
+(
+	SELECT 
+		ci.city_name,
+		COUNT(DISTINCT c.customer_id) AS unique_cx
+	FROM sales AS s
+	JOIN customers AS c ON c.customer_id = s.customer_id
+	JOIN city AS ci ON ci.city_id = c.city_id
+	GROUP BY 1
+)
+SELECT 
+	customers_table.city_name,
+	city_table.coffee_consumers AS coffee_consumer_in_millions,
+	customers_table.unique_cx
+FROM city_table
+JOIN customers_table
+ON city_table.city_name = customers_table.city_name;`)}
+                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                  aria-label="Copy code"
+                >
+                  <Copy size={16} />
+                </button>
+                <pre className="text-sm">
+{`WITH city_table AS 
+(
+	SELECT 
+		city_name,
+		ROUND((population * 0.25)/1000000, 2) AS coffee_consumers
+	FROM city
+),
+customers_table AS
+(
+	SELECT 
+		ci.city_name,
+		COUNT(DISTINCT c.customer_id) AS unique_cx
+	FROM sales AS s
+	JOIN customers AS c ON c.customer_id = s.customer_id
+	JOIN city AS ci ON ci.city_id = c.city_id
+	GROUP BY 1
+)
+SELECT 
+	customers_table.city_name,
+	city_table.coffee_consumers AS coffee_consumer_in_millions,
+	customers_table.unique_cx
+FROM city_table
+JOIN customers_table
+ON city_table.city_name = customers_table.city_name;`}
+                </pre>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        
+        <div className="mb-4">
+          <h4 className="text-base font-medium mb-2">Result:</h4>
+          <img 
+            src="/cq5.png" 
+            alt="City Population and Coffee Consumers Query Result" 
+            className="w-full rounded-md border border-border/50" 
+          />
+        </div>
+        
+         
+      </CollapsibleContent>
+    </Collapsible>
+
+    {/* Question 6 (new) */}
+    <Collapsible className="border border-border/50 rounded-md">
+      <CollapsibleTrigger className="flex justify-between items-center w-full p-4 text-left hover:bg-accent/10 transition-colors">
+        <h3 className="text-lg font-medium">🔎 Q6: Top Selling Products by City</h3>
+        <div className="text-muted-foreground">
+          <ChevronDown className="h-5 w-5" />
+        </div>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="p-6 pt-0 border-t border-border/50">
+        <p className="text-muted-foreground mb-4">What are the top 3 selling products in each city based on sales volume?</p>
+        
+        <Accordion type="single" collapsible className="w-full mb-4">
+          <AccordionItem value="question-6-sql">
+            <AccordionTrigger className="hover:text-primary text-base font-medium py-3">
+              SQL Query
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                <button 
+                  onClick={() => copyToClipboard(`SELECT * 
+FROM 
+(
+	SELECT 
+		ci.city_name,
+		p.product_name,
+		COUNT(s.sale_id) AS total_orders,
+		DENSE_RANK() OVER(PARTITION BY ci.city_name ORDER BY COUNT(s.sale_id) DESC) AS rank
+	FROM sales AS s
+	JOIN products AS p ON s.product_id = p.product_id
+	JOIN customers AS c ON c.customer_id = s.customer_id
+	JOIN city AS ci ON ci.city_id = c.city_id
+	GROUP BY 1, 2
+) AS t1
+WHERE rank <= 3;`)}
+                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                  aria-label="Copy code"
+                >
+                  <Copy size={16} />
+                </button>
+                <pre className="text-sm">
+{`SELECT * 
+FROM 
+(
+	SELECT 
+		ci.city_name,
+		p.product_name,
+		COUNT(s.sale_id) AS total_orders,
+		DENSE_RANK() OVER(PARTITION BY ci.city_name ORDER BY COUNT(s.sale_id) DESC) AS rank
+	FROM sales AS s
+	JOIN products AS p ON s.product_id = p.product_id
+	JOIN customers AS c ON c.customer_id = s.customer_id
+	JOIN city AS ci ON ci.city_id = c.city_id
+	GROUP BY 1, 2
+) AS t1
+WHERE rank <= 3;`}
+                </pre>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        
+        <div className="mb-4">
+          <h4 className="text-base font-medium mb-2">Result:</h4>
+          <img 
+            src="/cq6.png" 
+            alt="Top Selling Products by City Query Result" 
+            className="w-full rounded-md border border-border/50" 
+          />
+        </div>
+        
+         
+      </CollapsibleContent>
+    </Collapsible>
+
+    {/* Question 7 (new) */}
+    <Collapsible className="border border-border/50 rounded-md">
+      <CollapsibleTrigger className="flex justify-between items-center w-full p-4 text-left hover:bg-accent/10 transition-colors">
+        <h3 className="text-lg font-medium">🔎 Q7: Customer Segmentation by City</h3>
+        <div className="text-muted-foreground">
+          <ChevronDown className="h-5 w-5" />
+        </div>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="p-6 pt-0 border-t border-border/50">
+        <p className="text-muted-foreground mb-4">How many unique customers are there in each city who have purchased coffee products?</p>
+        
+        <Accordion type="single" collapsible className="w-full mb-4">
+          <AccordionItem value="question-7-sql">
+            <AccordionTrigger className="hover:text-primary text-base font-medium py-3">
+              SQL Query
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                <button 
+                  onClick={() => copyToClipboard(`SELECT 
+	ci.city_name,
+	COUNT(DISTINCT c.customer_id) AS unique_cx
+FROM city AS ci
+LEFT JOIN customers AS c ON c.city_id = ci.city_id
+JOIN sales AS s ON s.customer_id = c.customer_id
+WHERE s.product_id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
+GROUP BY 1;`)}
+                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                  aria-label="Copy code"
+                >
+                  <Copy size={16} />
+                </button>
+                <pre className="text-sm">
+{`SELECT 
+	ci.city_name,
+	COUNT(DISTINCT c.customer_id) AS unique_cx
+FROM city AS ci
+LEFT JOIN customers AS c ON c.city_id = ci.city_id
+JOIN sales AS s ON s.customer_id = c.customer_id
+WHERE s.product_id IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14)
+GROUP BY 1;`}
+                </pre>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        
+        <div className="mb-4">
+          <h4 className="text-base font-medium mb-2">Result:</h4>
+          <img 
+            src="/cq7.png" 
+            alt="Customer Segmentation by City Query Result" 
+            className="w-full rounded-md border border-border/50" 
+          />
+        </div>
+        
+        
+      </CollapsibleContent>
+    </Collapsible>
+
+    {/* Question 8 (new) */}
+    <Collapsible className="border border-border/50 rounded-md">
+      <CollapsibleTrigger className="flex justify-between items-center w-full p-4 text-left hover:bg-accent/10 transition-colors">
+        <h3 className="text-lg font-medium">🔎 Q8: Average Sale vs Rent</h3>
+        <div className="text-muted-foreground">
+          <ChevronDown className="h-5 w-5" />
+        </div>
+      </CollapsibleTrigger>
+      <CollapsibleContent className="p-6 pt-0 border-t border-border/50">
+        <p className="text-muted-foreground mb-4">Find each city and their average sale per customer and average rent per customer.</p>
+        
+        <Accordion type="single" collapsible className="w-full mb-4">
+          <AccordionItem value="question-8-sql">
+            <AccordionTrigger className="hover:text-primary text-base font-medium py-3">
+              SQL Query
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+                <button 
+                  onClick={() => copyToClipboard(`WITH city_table AS
+(
+	SELECT 
+		ci.city_name,
+		SUM(s.total) AS total_revenue,
+		COUNT(DISTINCT s.customer_id) AS total_cx,
+		ROUND(SUM(s.total)::NUMERIC / COUNT(DISTINCT s.customer_id)::NUMERIC, 2) AS avg_sale_pr_cx
+	FROM sales AS s
+	JOIN customers AS c ON s.customer_id = c.customer_id
+	JOIN city AS ci ON ci.city_id = c.city_id
+	GROUP BY 1
+),
+city_rent AS
+(
+	SELECT 
+		city_name, 
+		estimated_rent
+	FROM city
+)
+SELECT 
+	cr.city_name,
+	cr.estimated_rent,
+	ct.total_cx,
+	ct.avg_sale_pr_cx,
+	ROUND(cr.estimated_rent::NUMERIC / ct.total_cx::NUMERIC, 2) AS avg_rent_per_cx
+FROM city_rent AS cr
+JOIN city_table AS ct ON cr.city_name = ct.city_name
+ORDER BY 4 DESC;`)}
+                  className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+                  aria-label="Copy code"
+                >
+                  <Copy size={16} />
+                </button>
+                <pre className="text-sm">
+{`WITH city_table AS
+(
+	SELECT 
+		ci.city_name,
+		SUM(s.total) AS total_revenue,
+		COUNT(DISTINCT s.customer_id) AS total_cx,
+		ROUND(SUM(s.total)::NUMERIC / COUNT(DISTINCT s.customer_id)::NUMERIC, 2) AS avg_sale_pr_cx
+	FROM sales AS s
+	JOIN customers AS c ON s.customer_id = c.customer_id
+	JOIN city AS ci ON ci.city_id = c.city_id
+	GROUP BY 1
+),
+city_rent AS
+(
+	SELECT 
+		city_name, 
+		estimated_rent
+	FROM city
+)
+SELECT 
+	cr.city_name,
+	cr.estimated_rent,
+	ct.total_cx,
+	ct.avg_sale_pr_cx,
+	ROUND(cr.estimated_rent::NUMERIC / ct.total_cx::NUMERIC, 2) AS avg_rent_per_cx
+FROM city_rent AS cr
+JOIN city_table AS ct ON cr.city_name = ct.city_name
+ORDER BY 4 DESC;`}
+                </pre>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        
+        <div className="mb-4">
+          <h4 className="text-base font-medium mb-2">Result:</h4>
+          <img 
+            src="/cq8.png" 
+            alt="Average Sale vs Rent Query Result" 
+            className="w-full rounded-md border border-border/50" 
+          />
+        </div>
+        
+         
+      </CollapsibleContent>
+    </Collapsible>
+    <Collapsible className="border border-border/50 rounded-md">
+  <CollapsibleTrigger className="flex justify-between items-center w-full p-4 text-left hover:bg-accent/10 transition-colors">
+    <h3 className="text-lg font-medium">🔎 Q9: Monthly Sales Growth</h3>
+    <div className="text-muted-foreground">
+      <ChevronDown className="h-5 w-5" />
+    </div>
+  </CollapsibleTrigger>
+  <CollapsibleContent className="p-6 pt-0 border-t border-border/50">
+    <p className="text-muted-foreground mb-4">Calculate the percentage growth (or decline) in sales over different time periods (monthly) by each city.</p>
+    
+    <Accordion type="single" collapsible className="w-full mb-4">
+      <AccordionItem value="question-9-sql">
+        <AccordionTrigger className="hover:text-primary text-base font-medium py-3">
+          SQL Query
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+            <button 
+              onClick={() => copyToClipboard(`WITH monthly_sales AS
+(
+	SELECT 
+		ci.city_name,
+		EXTRACT(MONTH FROM sale_date) AS month,
+		EXTRACT(YEAR FROM sale_date) AS year,
+		SUM(s.total) AS total_sale
+	FROM sales AS s
+	JOIN customers AS c ON c.customer_id = s.customer_id
+	JOIN city AS ci ON ci.city_id = c.city_id
+	GROUP BY 1, 2, 3
+	ORDER BY 1, 3, 2
+),
+growth_ratio AS
+(
+	SELECT
+		city_name,
+		month,
+		year,
+		total_sale AS cr_month_sale,
+		LAG(total_sale, 1) OVER(PARTITION BY city_name ORDER BY year, month) AS last_month_sale
+	FROM monthly_sales
+)
+SELECT
+	city_name,
+	month,
+	year,
+	cr_month_sale,
+	last_month_sale,
+	ROUND((cr_month_sale - last_month_sale)::NUMERIC / last_month_sale::NUMERIC * 100, 2) AS growth_ratio
+FROM growth_ratio
+WHERE last_month_sale IS NOT NULL;`)}
+              className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+              aria-label="Copy code"
+            >
+              <Copy size={16} />
+            </button>
+            <pre className="text-sm">
+{`WITH monthly_sales AS
+(
+	SELECT 
+		ci.city_name,
+		EXTRACT(MONTH FROM sale_date) AS month,
+		EXTRACT(YEAR FROM sale_date) AS year,
+		SUM(s.total) AS total_sale
+	FROM sales AS s
+	JOIN customers AS c ON c.customer_id = s.customer_id
+	JOIN city AS ci ON ci.city_id = c.city_id
+	GROUP BY 1, 2, 3
+	ORDER BY 1, 3, 2
+),
+growth_ratio AS
+(
+	SELECT
+		city_name,
+		month,
+		year,
+		total_sale AS cr_month_sale,
+		LAG(total_sale, 1) OVER(PARTITION BY city_name ORDER BY year, month) AS last_month_sale
+	FROM monthly_sales
+)
+SELECT
+	city_name,
+	month,
+	year,
+	cr_month_sale,
+	last_month_sale,
+	ROUND((cr_month_sale - last_month_sale)::NUMERIC / last_month_sale::NUMERIC * 100, 2) AS growth_ratio
+FROM growth_ratio
+WHERE last_month_sale IS NOT NULL;`}
+            </pre>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+    
+    <div className="mb-4">
+      <h4 className="text-base font-medium mb-2">Result:</h4>
+      <img 
+        src="/cq9.png" 
+        alt="Monthly Sales Growth Query Result" 
+        className="w-full rounded-md border border-border/50" 
+      />
+    </div>
+    
+    
+  </CollapsibleContent>
+</Collapsible>
+
+<Collapsible className="border border-border/50 rounded-md">
+  <CollapsibleTrigger className="flex justify-between items-center w-full p-4 text-left hover:bg-accent/10 transition-colors">
+    <h3 className="text-lg font-medium">🔎 Q10: Market Potential Analysis</h3>
+    <div className="text-muted-foreground">
+      <ChevronDown className="h-5 w-5" />
+    </div>
+  </CollapsibleTrigger>
+  <CollapsibleContent className="p-6 pt-0 border-t border-border/50">
+    <p className="text-muted-foreground mb-4">Identify the top 3 cities based on highest sales.</p>
+    
+    <Accordion type="single" collapsible className="w-full mb-4">
+      <AccordionItem value="question-10-sql">
+        <AccordionTrigger className="hover:text-primary text-base font-medium py-3">
+          SQL Query
+        </AccordionTrigger>
+        <AccordionContent>
+          <div className="bg-card/20 p-4 rounded-md overflow-x-auto relative">
+            <button 
+              onClick={() => copyToClipboard(`WITH city_table AS 
+(
+	SELECT 
+		ci.city_name,
+		SUM(s.total) AS total_revenue,
+		COUNT(DISTINCT s.customer_id) AS total_cx,
+		ROUND(SUM(s.total)::NUMERIC / COUNT(DISTINCT s.customer_id)::NUMERIC, 2) AS avg_sale_pr_cx
+	FROM sales AS s
+	JOIN customers AS c ON s.customer_id = c.customer_id
+	JOIN city AS ci ON ci.city_id = c.city_id
+	GROUP BY 1
+),
+city_rent AS
+(
+	SELECT 
+		city_name, 
+		estimated_rent,
+		ROUND((population * 0.25)/1000000, 3) AS estimated_coffee_consumer_in_millions
+	FROM city
+)
+SELECT 
+	cr.city_name,
+	total_revenue,
+	cr.estimated_rent AS total_rent,
+	ct.total_cx,
+	estimated_coffee_consumer_in_millions,
+	ct.avg_sale_pr_cx,
+	ROUND(cr.estimated_rent::NUMERIC / ct.total_cx::NUMERIC, 2) AS avg_rent_per_cx
+FROM city_rent AS cr
+JOIN city_table AS ct ON cr.city_name = ct.city_name
+ORDER BY 2 DESC;`)}
+              className="absolute right-2 top-2 p-1 rounded hover:bg-primary/10"
+              aria-label="Copy code"
+            >
+              <Copy size={16} />
+            </button>
+            <pre className="text-sm">
+{`WITH city_table AS 
+(
+	SELECT 
+		ci.city_name,
+		SUM(s.total) AS total_revenue,
+		COUNT(DISTINCT s.customer_id) AS total_cx,
+		ROUND(SUM(s.total)::NUMERIC / COUNT(DISTINCT s.customer_id)::NUMERIC, 2) AS avg_sale_pr_cx
+	FROM sales AS s
+	JOIN customers AS c ON s.customer_id = c.customer_id
+	JOIN city AS ci ON ci.city_id = c.city_id
+	GROUP BY 1
+),
+city_rent AS
+(
+	SELECT 
+		city_name, 
+		estimated_rent,
+		ROUND((population * 0.25)/1000000, 3) AS estimated_coffee_consumer_in_millions
+	FROM city
+)
+SELECT 
+	cr.city_name,
+	total_revenue,
+	cr.estimated_rent AS total_rent,
+	ct.total_cx,
+	estimated_coffee_consumer_in_millions,
+	ct.avg_sale_pr_cx,
+	ROUND(cr.estimated_rent::NUMERIC / ct.total_cx::NUMERIC, 2) AS avg_rent_per_cx
+FROM city_rent AS cr
+JOIN city_table AS ct ON cr.city_name = ct.city_name
+ORDER BY 2 DESC;`}
+            </pre>
+          </div>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+    
+    <div className="mb-4">
+      <h4 className="text-base font-medium mb-2">Result:</h4>
+      <img 
+        src="/cq10.png" 
+        alt="Market Potential Analysis Query Result" 
+        className="w-full rounded-md border border-border/50" 
+      />
+    </div>
+    
+    
+  </CollapsibleContent>
+</Collapsible>
+  </div>
+</section>
+              {/* Conclusion Section */}
+              <section id="conclusion" className="scroll-mt-24 mb-16">
+                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                  <CheckCircle2 className="text-primary" /> Conclusion
+                </h2>
+                <div className="text-muted-foreground space-y-4">
+                  <p>
+                    Based on the weighted scoring analysis and ad hoc requests, we can confidently recommend Pune, Chennai, and Delhi as the top three cities for Monday Coffee's business expansion.
+                  </p>
+                  <p>
+                    Each city offers unique advantages in terms of revenue potential, customer base, and cost efficiency. The data-driven approach ensures that these recommendations are backed by solid evidence rather than intuition alone.
+                  </p>
+                  <p>
+                    By prioritizing these cities, Monday Coffee can strategically allocate resources to maximize growth potential while minimizing risks associated with new location openings.
+                  </p>
+                </div>
+              </section>
+            </div>
+            
+            {/* Sidebar Column - Modified to scroll with the page (not sticky) */}
+            <div className="lg:col-span-1">
+              <div className="space-y-8">
+                {/* Coffee image */}
+                <Card className="overflow-hidden border border-border/50 shadow-md hover:shadow-xl transition-all">
+                  <img 
+                    src="/coffee2.jpg" 
+                    alt="Coffee shop" 
+                    className="w-full h-48 object-cover"
+                  />
+                </Card>
+                
+                {/* Key Insights */}
+                <Card className="overflow-hidden border border-border/50 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
+                  <div className="p-5">
+                    <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+                      <Coffee className="h-4 w-4 text-blue-500" /> Data-Driven Insights
+                    </h3>
+                    <ul className="space-y-3">
+                      <li className="flex items-start gap-2">
+                        <span className="inline-flex mt-1 justify-center items-center h-4 w-4 text-[8px] rounded-full bg-primary text-white font-bold">✓</span>
+                        <span className="text-sm">25% of city populations are coffee consumers</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="inline-flex mt-1 justify-center items-center h-4 w-4 text-[8px] rounded-full bg-primary text-white font-bold">✓</span>
+                        <span className="text-sm">Loyalty programs increase repeat visits by 18%</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="inline-flex mt-1 justify-center items-center h-4 w-4 text-[8px] rounded-full bg-primary text-white font-bold">✓</span>
+                        <span className="text-sm">Highest revenue potential in urban locations</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="inline-flex mt-1 justify-center items-center h-4 w-4 text-[8px] rounded-full bg-primary text-white font-bold">✓</span>
+                        <span className="text-sm">High rent areas require 35% more sales volume</span>
+                      </li>
+                    </ul>
+                  </div>
+                </Card>
+                
+                {/* Related Projects */}
+                <Card className="overflow-hidden border border-border/50 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all">
+                  <div className="p-5">
+                    <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+                      <Link2 className="h-4 w-4 text-blue-500" /> Related Projects
+                    </h3>
+                    <ul className="space-y-4">
+                      <li>
+                        <Link to="/goodcabs-analysis" className="group flex items-start gap-3 hover:bg-accent/50 p-2 rounded-md transition-colors">
+                          <LineChart className="h-5 w-5 text-blue-500 mt-0.5" />
+                          <div>
+                            <h4 className="text-sm font-medium group-hover:text-primary transition-colors">GoodCabs Performance Analysis</h4>
+                            <p className="text-xs text-muted-foreground">Data-driven insights for strategic decisions</p>
+                          </div>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="/data-job-market-analysis" className="group flex items-start gap-3 hover:bg-accent/50 p-2 rounded-md transition-colors">
+                          <Database className="h-5 w-5 text-blue-500 mt-0.5" />
+                          <div>
+                            <h4 className="text-sm font-medium group-hover:text-primary transition-colors">Data Job Market Analysis</h4>
+                            <p className="text-xs text-muted-foreground">Exploring trends in data science careers</p>
+                          </div>
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </Card>
+
+                {/* Project Info Card */}
+                <Card className="border border-border/50 overflow-hidden mb-6">
+                  <CardContent className="p-6">
+                    <h3 className="font-medium text-lg mb-4">Project Details</h3>
+                    <ul className="space-y-3 text-sm">
+                      <li className="flex items-start">
+                        <Monitor className="h-4 w-4 text-blue-500 mr-2 mt-0.5" />
+                        <div>
+                          <span className="text-muted-foreground">Tools: </span>
+                          <span>SQL, PostgreSQL, Excel</span>
+                        </div>
+                      </li>
+                      <li className="flex items-start">
+                        <LineChart className="h-4 w-4 text-blue-500 mr-2 mt-0.5" />
+                        <div>
+                          <span className="text-muted-foreground">Visualization: </span>
+                          <span>Tableau, Excel Charts</span>
+                        </div>
+                      </li>
+                      <li className="flex items-start">
+                        <GraduationCap className="h-4 w-4 text-blue-500 mr-2 mt-0.5" />
+                        <div>
+                          <span className="text-muted-foreground">Skills: </span>
+                          <span>Data Analysis, SQL, Business Intelligence</span>
+                        </div>
+                      </li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default NewProject;

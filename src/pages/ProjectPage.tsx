@@ -1,3 +1,4 @@
+
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -150,7 +151,7 @@ const ProjectPage = () => {
             </Link>
             
             <Button asChild variant="ghost" size="sm" className="gap-1">
-              <Link to="/">
+              <Link to="/#projects">
                 <ArrowLeft className="h-4 w-4" />
                 <span>Back to Projects</span>
               </Link>

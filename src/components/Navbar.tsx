@@ -53,8 +53,9 @@ const Navbar = () => {
         }
       }
     } else {
-      // If not on home page and link is an anchor, navigate to home first then to the anchor
+      // If not on home page and link is an anchor, navigate to home page first
       if (href.startsWith('#')) {
+        // Don't prevent default here to let the Link component handle navigation
         setMobileMenuOpen(false);
       }
     }
@@ -83,9 +84,9 @@ const Navbar = () => {
             {navItems.map((item) => (
               <Link
                 key={item.label}
-                to={item.href}
+                to={isHomePage ? item.href : `/${item.href}`}
                 className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors duration-200"
-                onClick={(e) => handleNavItemClick(e, item.href)}
+                onClick={(e) => isHomePage && handleNavItemClick(e, item.href)}
               >
                 {item.label}
               </Link>
@@ -144,7 +145,7 @@ const Navbar = () => {
           {navItems.map((item) => (
             <Link
               key={item.label}
-              to={item.href}
+              to={isHomePage ? item.href : `/${item.href}`}
               className="block py-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
               onClick={(e) => handleNavItemClick(e, item.href)}
             >

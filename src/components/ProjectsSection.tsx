@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { useTheme } from "@/hooks/useTheme";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { getAssetPath } from "@/utils/assetPath";
 
 interface Project {
   id: number;
@@ -77,7 +76,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
     setImageLoaded(true);
   };
 
-  // Use a tag instead of Link component to open in new tab
+  // Use anchor tag to open in new tab instead of Link component
   return (
     <a 
       href={projectUrl}
@@ -92,9 +91,9 @@ const ProjectCard = ({ project }: { project: Project }) => {
             <div className="absolute inset-0 bg-muted animate-pulse"></div>
           )}
           
-          {/* The actual image with loading optimizations and correct path */}
+          {/* The actual image with loading optimizations */}
           <img
-            src={getAssetPath(project.image)}
+            src={project.image}
             alt={project.title}
             className={`object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
