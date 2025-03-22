@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Download } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -16,6 +15,13 @@ const HeroSection = () => {
     img.src = "/profile-photo.jpg";
     img.onload = () => setImageLoaded(true);
   }, []);
+
+  const scrollToProjects = () => {
+    const projectsSection = document.getElementById('projects');
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section 
@@ -52,8 +58,9 @@ const HeroSection = () => {
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
                 <Button
                   className="rounded-md bg-primary text-white hover:bg-primary/90 transition-all"
+                  onClick={scrollToProjects}
                 >
-                  <Link to="/#projects">View Projects</Link>
+                  View Projects
                 </Button>
                 <Button
                   asChild
