@@ -1,12 +1,28 @@
 
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Download } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [imageLoadingProgress, setImageLoadingProgress] = useState(0);
+  const [showBall, setShowBall] = useState(false);
+  const [ballPosition, setBallPosition] = useState(-1); // -1: hidden, 0-6: animation steps
+  const nameRef = useRef<HTMLSpanElement>(null);
+  const letterRefs = {
+    s: useRef<HTMLSpanElement>(null),
+    u: useRef<HTMLSpanElement>(null),
+    b: useRef<HTMLSpanElement>(null),
+    h: useRef<HTMLSpanElement>(null),
+    r: useRef<HTMLSpanElement>(null),
+    a: useRef<HTMLSpanElement>(null),
+    j: useRef<HTMLSpanElement>(null),
+    y: useRef<HTMLSpanElement>(null),
+    o: useRef<HTMLSpanElement>(null),
+    t: useRef<HTMLSpanElement>(null),
+    i: useRef<HTMLSpanElement>(null)
+  };
 
   useEffect(() => {
     setIsVisible(true);
@@ -26,10 +42,31 @@ const HeroSection = () => {
       setImageLoading(false);
       setImageLoadingProgress(100);
       clearInterval(progressInterval);
+      
+      // Start ball animation after a short delay once image is loaded
+      setTimeout(() => {
+        setShowBall(true);
+        animateBallBounce();
+      }, 800);
     };
     
     return () => clearInterval(progressInterval);
   }, []);
+
+  const animateBallBounce = () => {
+    // Define the sequence of letters to bounce on
+    const sequence = ['s', 'b', 'r', 'j', 'o', 'i'];
+    let currentIndex = 0;
+    
+    const bounceInterval = setInterval(() => {
+      if (currentIndex < sequence.length) {
+        setBallPosition(currentIndex);
+        currentIndex++;
+      } else {
+        clearInterval(bounceInterval);
+      }
+    }, 400); // Time between bounces
+  };
 
   const scrollToProjects = () => {
     const projectsSection = document.getElementById('projects');
@@ -62,8 +99,29 @@ const HeroSection = () => {
                 </span>
               </div>
               
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight">
-                Subhrajyoti <span className="text-gradient">Mahanta</span>
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight relative">
+                <span className="name-container relative" ref={nameRef}>
+                  {/* Animation ball */}
+                  {showBall && (
+                    <span 
+                      className={`animation-ball ${ballPosition >= 0 ? `bounce-${ballPosition}` : 'ball-initial'}`} 
+                      aria-hidden="true"
+                    />
+                  )}
+                  
+                  {/* Name with letter spans for animation targets */}
+                  <span className="letter" ref={letterRefs.s}>S</span>
+                  <span className="letter" ref={letterRefs.u}>u</span>
+                  <span className="letter" ref={letterRefs.b}>b</span>
+                  <span className="letter" ref={letterRefs.h}>h</span>
+                  <span className="letter" ref={letterRefs.r}>r</span>
+                  <span className="letter" ref={letterRefs.a}>a</span>
+                  <span className="letter" ref={letterRefs.j}>j</span>
+                  <span className="letter" ref={letterRefs.y}>y</span>
+                  <span className="letter" ref={letterRefs.o}>o</span>
+                  <span className="letter" ref={letterRefs.t}>t</span>
+                  <span className="letter" ref={letterRefs.i}>i</span>
+                </span> <span className="text-gradient">Mahanta</span>
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">

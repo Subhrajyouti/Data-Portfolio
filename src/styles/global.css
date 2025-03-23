@@ -54,3 +54,183 @@ section[id] {
 .animate-shimmer {
   animation: shimmer 2.5s infinite;
 }
+
+/* Bouncing ball animation */
+.name-container {
+  position: relative;
+  display: inline-block;
+}
+
+.letter {
+  display: inline-block;
+  position: relative;
+}
+
+.animation-ball {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #0EA5E9; /* bright blue */
+  border-radius: 50%;
+  z-index: 20;
+  box-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
+}
+
+.ball-initial {
+  top: -100px;
+  left: 8px; /* Position above the first letter */
+  animation: fallFromSky 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+@keyframes fallFromSky {
+  0% {
+    top: -100px;
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+/* Ball bounce animations for each letter */
+.bounce-0 {
+  animation: bounceOnS 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.bounce-1 {
+  animation: bounceOnB 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.bounce-2 {
+  animation: bounceOnR 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.bounce-3 {
+  animation: bounceOnJ 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.bounce-4 {
+  animation: bounceOnO 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.bounce-5 {
+  animation: bounceToI 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+@keyframes bounceOnS {
+  0% {
+    top: 0;
+    left: 8px;
+  }
+  50% {
+    top: -20px;
+    left: 20px;
+  }
+  100% {
+    top: 0;
+    left: 30px; /* Position on 'b' */
+  }
+}
+
+@keyframes bounceOnB {
+  0% {
+    top: 0;
+    left: 30px;
+  }
+  50% {
+    top: -20px;
+    left: 50px;
+  }
+  100% {
+    top: 0;
+    left: 75px; /* Position on 'r' */
+  }
+}
+
+@keyframes bounceOnR {
+  0% {
+    top: 0;
+    left: 75px;
+  }
+  50% {
+    top: -20px;
+    left: 100px;
+  }
+  100% {
+    top: 0;
+    left: 130px; /* Position on 'j' */
+  }
+}
+
+@keyframes bounceOnJ {
+  0% {
+    top: 0;
+    left: 130px;
+  }
+  50% {
+    top: -20px;
+    left: 160px;
+  }
+  100% {
+    top: 0;
+    left: 190px; /* Position on 'o' */
+  }
+}
+
+@keyframes bounceOnO {
+  0% {
+    top: 0;
+    left: 190px;
+  }
+  50% {
+    top: -20px;
+    left: 220px;
+  }
+  100% {
+    top: 0;
+    left: 240px; /* Position on 'i' */
+  }
+}
+
+@keyframes bounceToI {
+  0% {
+    top: 0;
+    left: 240px;
+  }
+  50% {
+    top: -15px;
+    left: 240px;
+  }
+  100% {
+    top: -25px;
+    left: 240px; /* Position above 'i' as the dot */
+    box-shadow: 0 0 15px rgba(14, 165, 233, 0.8);
+  }
+}
+
+/* Style for letter i to hide its dot once the ball settles */
+.letter:nth-child(11) {
+  position: relative;
+}
+
+.letter:nth-child(11)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: currentColor;
+  border-radius: 50%;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.bounce-5 + .letter:nth-child(11)::after {
+  opacity: 0; /* Hide the original dot when the ball settles */
+}
