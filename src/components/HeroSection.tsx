@@ -1,16 +1,12 @@
-
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Download } from "lucide-react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [imageLoadingProgress, setImageLoadingProgress] = useState(0);
-  const [showBall, setShowBall] = useState(false);
-  const [ballPosition, setBallPosition] = useState(-1); // -1: hidden, 0-5: animation steps
-  const [dotReplaced, setDotReplaced] = useState(false);
-  const nameRef = useRef<HTMLSpanElement>(null);
+  const [animationPhase, setAnimationPhase] = useState("initial"); // "initial", "floating", "settled"
 
   useEffect(() => {
     setIsVisible(true);
@@ -31,42 +27,34 @@ const HeroSection = () => {
       setImageLoadingProgress(100);
       clearInterval(progressInterval);
       
-      // Start ball animation after a short delay once image is loaded
+      // Start the floating animation
+      setAnimationPhase("floating");
+      
+      // After the floating animation completes, switch to gentle oscillation
       setTimeout(() => {
-        setShowBall(true);
-        animateBallBounce();
-      }, 800);
+        setAnimationPhase("settled");
+      }, 8000); // Match this to the duration of the floating animation
     };
     
     return () => clearInterval(progressInterval);
   }, []);
 
-  const animateBallBounce = () => {
-    // Define the sequence of letters to bounce on
-    let currentIndex = 0;
-    
-    const bounceInterval = setInterval(() => {
-      if (currentIndex < 6) {
-        setBallPosition(currentIndex);
-        
-        // Set dotReplaced to true when the ball reaches the last position (i)
-        if (currentIndex === 5) {
-          setTimeout(() => {
-            setDotReplaced(true);
-          }, 450); // Just before the animation completes
-        }
-        
-        currentIndex++;
-      } else {
-        clearInterval(bounceInterval);
-      }
-    }, 500); // Time between bounces - slightly increased for smoother perception
-  };
-
   const scrollToProjects = () => {
     const projectsSection = document.getElementById('projects');
     if (projectsSection) {
       projectsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // Determine which animation class to use based on the animation phase
+  const getAnimationClass = () => {
+    switch (animationPhase) {
+      case "floating":
+        return "animate-floating";
+      case "settled":
+        return "animate-gentle-oscillation";
+      default:
+        return "";
     }
   };
 
@@ -94,33 +82,12 @@ const HeroSection = () => {
                 </span>
               </div>
               
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight relative">
-                <span className={`name-container relative ${dotReplaced ? 'dot-replaced' : ''}`} ref={nameRef}>
-                  {/* Animation ball */}
-                  {showBall && (
-                    <span 
-                      className={`animation-ball ${ballPosition >= 0 ? `bounce-${ballPosition}` : 'ball-initial'}`} 
-                      aria-hidden="true"
-                    />
-                  )}
-                  
-                  {/* Name with letter spans for animation targets */}
-                  <span className="letter">S</span>
-                  <span className="letter">u</span>
-                  <span className="letter">b</span>
-                  <span className="letter">h</span>
-                  <span className="letter">r</span>
-                  <span className="letter">a</span>
-                  <span className="letter">j</span>
-                  <span className="letter">y</span>
-                  <span className="letter">o</span>
-                  <span className="letter">t</span>
-                  <span className="letter letter-i">i</span>
-                </span> <span className="text-gradient">Mahanta</span>
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight">
+                Subhrajyoti <span className="text-gradient">Mahanta</span>
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
-                Turning Complex Datasets Into Actionable Insights
+               Turning Complex Datasets Into Actionable Insights
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
@@ -144,7 +111,7 @@ const HeroSection = () => {
             </div>
           </div>
           
-          {/* Enhanced Profile Photo with more dynamic pendulum-like animation */}
+          {/* Enhanced Profile Photo with physics-based ball animation */}
           <div className={`md:w-1/2 flex justify-center mt-12 md:mt-0 transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
           }`}>
@@ -154,15 +121,15 @@ const HeroSection = () => {
                 ${imageLoading ? 'opacity-100 animate-pulse' : 'opacity-70 group-hover:opacity-100 animate-pulse-slow'} 
                 transition-all duration-1000`}></div>
               
-              {/* Image container with enhanced pendulum animation */}
-              <div className="relative h-64 w-64 md:h-80 md:w-80 overflow-hidden rounded-full animate-floating">
+              {/* Image container with physics-based ball animation */}
+              <div className={`relative h-64 w-64 md:h-80 md:w-80 overflow-hidden rounded-full ${getAnimationClass()} transition-all duration-1000`}>
                 <div className="absolute inset-0 bg-gradient-to-tr from-background/80 to-transparent opacity-50 mix-blend-overlay z-10"></div>
                 
                 {/* Loading animation container */}
                 {imageLoading && (
                   <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
                     {/* Circular loading indicator */}
-                    <div className="relative group animate-floating">
+                    <div className="relative group">
                       {/* Circular progress indicator */}
                       <svg className="absolute inset-0 w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
                         <circle 
@@ -210,6 +177,9 @@ const HeroSection = () => {
                 {/* Interactive glow on hover - only active after loaded */}
                 <div className={`absolute inset-0 bg-primary/10 transition-opacity duration-500 rounded-full
                   ${imageLoading ? 'opacity-0' : 'opacity-0 group-hover:opacity-30'}`}></div>
+                  
+                {/* Shadow that moves with the ball */}
+                <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-3/4 h-6 bg-black/10 dark:bg-black/20 rounded-full blur-md"></div>
               </div>
             </div>
           </div>
