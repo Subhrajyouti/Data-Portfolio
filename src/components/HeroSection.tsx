@@ -7,7 +7,6 @@ const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [imageLoadingProgress, setImageLoadingProgress] = useState(0);
-  const [nameAnimated, setNameAnimated] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -29,15 +28,7 @@ const HeroSection = () => {
       clearInterval(progressInterval);
     };
     
-    // Trigger name animation after a short delay
-    const nameAnimationTimeout = setTimeout(() => {
-      setNameAnimated(true);
-    }, 800);
-    
-    return () => {
-      clearInterval(progressInterval);
-      clearTimeout(nameAnimationTimeout);
-    };
+    return () => clearInterval(progressInterval);
   }, []);
 
   const scrollToProjects = () => {
@@ -72,12 +63,7 @@ const HeroSection = () => {
               </div>
               
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight">
-                <span className={`inline-block transition-all duration-700 ${nameAnimated ? "scale-110 text-primary" : ""}`}>
-                  Subhrajyoti
-                </span>{" "}
-                <span className={`inline-block transition-all duration-700 ${nameAnimated ? "scale-90 opacity-80" : ""} text-gradient`}>
-                  Mahanta
-                </span>
+                Subhrajyoti <span className="text-gradient">Mahanta</span>
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
