@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Download } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
@@ -8,6 +9,7 @@ const HeroSection = () => {
   const [imageLoadingProgress, setImageLoadingProgress] = useState(0);
   const [ballAnimation, setBallAnimation] = useState("hidden"); // hidden, falling, bouncing, settled
   const [currentBounce, setCurrentBounce] = useState(0);
+  const [nameAnimated, setNameAnimated] = useState(false);
   const nameRef = useRef(null);
   
   const bouncePositions = [
@@ -51,6 +53,10 @@ const HeroSection = () => {
               // On final bounce, switch to settled state
               setTimeout(() => {
                 setBallAnimation("settled");
+                // Start name animation after ball settles
+                setTimeout(() => {
+                  setNameAnimated(true);
+                }, 500);
               }, 500);
             }
           }, position.delay);
@@ -127,17 +133,17 @@ const HeroSection = () => {
               <div className="relative" ref={nameRef}>
                 {/* Bouncing ball */}
                 <div 
-                  className={`absolute w-3 h-3 bg-blue-500 rounded-full z-10 shadow-lg`}
+                  className={`absolute w-3 h-3 bg-blue-500 rounded-full z-10 shadow-lg ${ballAnimation === "settled" ? "ball-pulse ball-glow" : ""}`}
                   style={getBallStyle()}
                 ></div>
                 
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight">
-                  Subhrajyot<span className="relative">
+                  <span className={`inline-block ${nameAnimated ? "animate-name-float" : ""}`}>Subhrajyot</span><span className="relative">
                     {/* Hidden dot when ball is settled */}
                     <span className={`absolute -top-[4px] right-[4px] w-3 h-3 rounded-full ${ballAnimation === 'settled' ? 'bg-blue-500' : 'bg-transparent'}`}></span>
                     {/* The letter i without the dot when ball is settled */}
                     i
-                  </span> <span className="text-gradient">Mahanta</span>
+                  </span> <span className={`text-gradient inline-block ${nameAnimated ? "animate-name-highlight" : ""}`}>Mahanta</span>
                 </h1>
               </div>
               

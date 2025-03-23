@@ -1,3 +1,4 @@
+
 /* Hide scrollbar but allow scrolling */
 .hide-scrollbar {
   -ms-overflow-style: none;  /* IE and Edge */
@@ -172,4 +173,46 @@ section[id] {
 
 .ball-trail {
   animation: fadeOut 0.5s linear forwards;
+}
+
+/* Name animations */
+@keyframes nameFloat {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-3px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-name-float {
+  animation: nameFloat 6s ease-in-out infinite;
+}
+
+@keyframes nameHighlight {
+  0% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
+.animate-name-highlight {
+  animation: nameHighlight 7s ease-in-out infinite;
 }
