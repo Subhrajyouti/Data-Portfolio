@@ -1,12 +1,16 @@
 
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Download } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [imageLoadingProgress, setImageLoadingProgress] = useState(0);
+  const [showBall, setShowBall] = useState(false);
+  const [ballPosition, setBallPosition] = useState(-1); // -1: hidden, 0-5: animation steps
+  const [dotReplaced, setDotReplaced] = useState(false);
+  const nameRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     setIsVisible(true);
@@ -26,10 +30,38 @@ const HeroSection = () => {
       setImageLoading(false);
       setImageLoadingProgress(100);
       clearInterval(progressInterval);
+      
+      // Start ball animation after a short delay once image is loaded
+      setTimeout(() => {
+        setShowBall(true);
+        animateBallBounce();
+      }, 800);
     };
     
     return () => clearInterval(progressInterval);
   }, []);
+
+  const animateBallBounce = () => {
+    // Define the sequence of letters to bounce on
+    let currentIndex = 0;
+    
+    const bounceInterval = setInterval(() => {
+      if (currentIndex < 6) {
+        setBallPosition(currentIndex);
+        
+        // Set dotReplaced to true when the ball reaches the last position (i)
+        if (currentIndex === 5) {
+          setTimeout(() => {
+            setDotReplaced(true);
+          }, 450); // Just before the animation completes
+        }
+        
+        currentIndex++;
+      } else {
+        clearInterval(bounceInterval);
+      }
+    }, 500); // Time between bounces - slightly increased for smoother perception
+  };
 
   const scrollToProjects = () => {
     const projectsSection = document.getElementById('projects');
@@ -62,12 +94,33 @@ const HeroSection = () => {
                 </span>
               </div>
               
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight">
-                Subhrajyoti <span className="text-gradient">Mahanta</span>
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight relative">
+                <span className={`name-container relative ${dotReplaced ? 'dot-replaced' : ''}`} ref={nameRef}>
+                  {/* Animation ball */}
+                  {showBall && (
+                    <span 
+                      className={`animation-ball ${ballPosition >= 0 ? `bounce-${ballPosition}` : 'ball-initial'}`} 
+                      aria-hidden="true"
+                    />
+                  )}
+                  
+                  {/* Name with letter spans for animation targets */}
+                  <span className="letter">S</span>
+                  <span className="letter">u</span>
+                  <span className="letter">b</span>
+                  <span className="letter">h</span>
+                  <span className="letter">r</span>
+                  <span className="letter">a</span>
+                  <span className="letter">j</span>
+                  <span className="letter">y</span>
+                  <span className="letter">o</span>
+                  <span className="letter">t</span>
+                  <span className="letter letter-i">i</span>
+                </span> <span className="text-gradient">Mahanta</span>
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
-               Turning Complex Datasets Into Actionable Insights
+                Turning Complex Datasets Into Actionable Insights
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 pt-2">
