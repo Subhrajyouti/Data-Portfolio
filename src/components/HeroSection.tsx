@@ -1,21 +1,33 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Download } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const HeroSection = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoading, setImageLoading] = useState(true);
   const [imageLoadingProgress, setImageLoadingProgress] = useState(0);
-  const [animationPhase, setAnimationPhase] = useState("initial"); // "initial", "floating", "settled"
+  const [ballAnimation, setBallAnimation] = useState("hidden"); // hidden, falling, bouncing, settled
+  const [currentBounce, setCurrentBounce] = useState(0);
+  const nameRef = useRef(null);
+  
+  const bouncePositions = [
+    { letter: 'S', offsetX: '0%', delay: 0 },      // S
+    { letter: 'b', offsetX: '11%', delay: 500 },   // b
+    { letter: 'r', offsetX: '22%', delay: 1000 },  // r
+    { letter: 'j', offsetX: '55%', delay: 1500 },  // j
+    { letter: 'o', offsetX: '66%', delay: 2000 },  // o
+    { letter: 't', offsetX: '77%', delay: 2500 },  // t
+    { letter: 'i', offsetX: '85%', delay: 3000 },  // i (final destination)
+  ];
 
   useEffect(() => {
     setIsVisible(true);
     
-    // Simulate loading progress for better visual feedback
+    // Simulate loading progress
     const progressInterval = setInterval(() => {
       setImageLoadingProgress(prev => {
         const newValue = prev + (15 * Math.random());
-        return newValue > 90 ? 90 : newValue; // Cap at 90% until actual load
+        return newValue > 90 ? 90 : newValue;
       });
     }, 200);
     
@@ -27,13 +39,23 @@ const HeroSection = () => {
       setImageLoadingProgress(100);
       clearInterval(progressInterval);
       
-      // Start the floating animation
-      setAnimationPhase("floating");
-      
-      // After the floating animation completes, switch to gentle oscillation
+      // Start the ball animation after a short delay
       setTimeout(() => {
-        setAnimationPhase("settled");
-      }, 8000); // Match this to the duration of the floating animation
+        setBallAnimation("falling");
+        
+        // Start the bouncing sequence
+        bouncePositions.forEach((position, index) => {
+          setTimeout(() => {
+            setCurrentBounce(index);
+            if (index === bouncePositions.length - 1) {
+              // On final bounce, switch to settled state
+              setTimeout(() => {
+                setBallAnimation("settled");
+              }, 500);
+            }
+          }, position.delay);
+        });
+      }, 1000);
     };
     
     return () => clearInterval(progressInterval);
@@ -46,16 +68,36 @@ const HeroSection = () => {
     }
   };
 
-  // Determine which animation class to use based on the animation phase
-  const getAnimationClass = () => {
-    switch (animationPhase) {
-      case "floating":
-        return "animate-floating";
-      case "settled":
-        return "animate-gentle-oscillation";
-      default:
-        return "";
+  // Calculate ball position based on current bounce
+  const getBallStyle = () => {
+    if (ballAnimation === "hidden") {
+      return { opacity: 0 };
     }
+    
+    if (ballAnimation === "falling") {
+      return {
+        opacity: 1,
+        left: bouncePositions[currentBounce].offsetX,
+        transform: `translateY(${-100 + (currentBounce * 20)}px)`,
+        transition: 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), left 0.3s ease'
+      };
+    }
+    
+    if (ballAnimation === "settled") {
+      return {
+        opacity: 1,
+        left: '85%',  // Position above the 'i'
+        transform: 'translateY(-70px)', // Adjust to align with the dot position
+        transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.3s ease'
+      };
+    }
+    
+    return {
+      opacity: 1,
+      left: bouncePositions[currentBounce].offsetX,
+      transform: 'translateY(0px)',
+      transition: 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.3s ease'
+    };
   };
 
   return (
@@ -82,9 +124,22 @@ const HeroSection = () => {
                 </span>
               </div>
               
-              <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight">
-                Subhrajyoti <span className="text-gradient">Mahanta</span>
-              </h1>
+              <div className="relative" ref={nameRef}>
+                {/* Bouncing ball */}
+                <div 
+                  className={`absolute w-3 h-3 bg-blue-500 rounded-full z-10 shadow-lg`}
+                  style={getBallStyle()}
+                ></div>
+                
+                <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight">
+                  Subhrajyot<span className="relative">
+                    {/* Hidden dot when ball is settled */}
+                    <span className={`absolute -top-[4px] right-[4px] w-3 h-3 rounded-full ${ballAnimation === 'settled' ? 'bg-blue-500' : 'bg-transparent'}`}></span>
+                    {/* The letter i without the dot when ball is settled */}
+                    i
+                  </span> <span className="text-gradient">Mahanta</span>
+                </h1>
+              </div>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
                Turning Complex Datasets Into Actionable Insights
@@ -111,7 +166,7 @@ const HeroSection = () => {
             </div>
           </div>
           
-          {/* Enhanced Profile Photo with physics-based ball animation */}
+          {/* Profile Photo */}
           <div className={`md:w-1/2 flex justify-center mt-12 md:mt-0 transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"
           }`}>
@@ -121,8 +176,8 @@ const HeroSection = () => {
                 ${imageLoading ? 'opacity-100 animate-pulse' : 'opacity-70 group-hover:opacity-100 animate-pulse-slow'} 
                 transition-all duration-1000`}></div>
               
-              {/* Image container with physics-based ball animation */}
-              <div className={`relative h-64 w-64 md:h-80 md:w-80 overflow-hidden rounded-full ${getAnimationClass()} transition-all duration-1000`}>
+              {/* Image container */}
+              <div className="relative h-64 w-64 md:h-80 md:w-80 overflow-hidden rounded-full">
                 <div className="absolute inset-0 bg-gradient-to-tr from-background/80 to-transparent opacity-50 mix-blend-overlay z-10"></div>
                 
                 {/* Loading animation container */}
@@ -160,7 +215,7 @@ const HeroSection = () => {
                   </div>
                 )}
                 
-                {/* Image with enhanced animations */}
+                {/* Image with animations */}
                 <img 
                   src="/profile-photo.jpg" 
                   alt="Subhrajyoti Mahanta" 
@@ -177,9 +232,6 @@ const HeroSection = () => {
                 {/* Interactive glow on hover - only active after loaded */}
                 <div className={`absolute inset-0 bg-primary/10 transition-opacity duration-500 rounded-full
                   ${imageLoading ? 'opacity-0' : 'opacity-0 group-hover:opacity-30'}`}></div>
-                  
-                {/* Shadow that moves with the ball */}
-                <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-3/4 h-6 bg-black/10 dark:bg-black/20 rounded-full blur-md"></div>
               </div>
             </div>
           </div>

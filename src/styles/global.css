@@ -1,4 +1,3 @@
-
 /* Hide scrollbar but allow scrolling */
 .hide-scrollbar {
   -ms-overflow-style: none;  /* IE and Edge */
@@ -55,185 +54,122 @@ section[id] {
   animation: shimmer 2.5s infinite;
 }
 
-/* Bouncing ball animation */
-.name-container {
-  position: relative;
-  display: inline-block;
-}
-
-.letter {
-  display: inline-block;
-  position: relative;
-}
-
-.animation-ball {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background-color: #0EA5E9; /* bright blue */
-  border-radius: 50%;
-  z-index: 20;
-  box-shadow: 0 0 10px rgba(14, 165, 233, 0.5);
-}
-
-.ball-initial {
-  top: -100px;
-  left: 8px; /* Position above the first letter */
-  animation: fallFromSky 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-}
-
-@keyframes fallFromSky {
+/* Ball animations for letter bouncing sequence */
+@keyframes fallFromTop {
   0% {
-    top: -100px;
+    transform: translateY(-150px);
     opacity: 0;
   }
   50% {
     opacity: 1;
   }
   100% {
-    top: 0;
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
-/* Ball bounce animations for each letter - improved for smoother animation */
-.bounce-0 {
-  animation: bounceOnS 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-.bounce-1 {
-  animation: bounceOnB 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-.bounce-2 {
-  animation: bounceOnR 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-.bounce-3 {
-  animation: bounceOnJ 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-.bounce-4 {
-  animation: bounceOnO 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-.bounce-5 {
-  animation: bounceToI 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-@keyframes bounceOnS {
+@keyframes bounce {
   0% {
-    top: 0;
-    left: 8px;
+    transform: translateY(-40px);
   }
   50% {
-    top: -20px;
-    left: 20px;
+    transform: translateY(10px);
+  }
+  75% {
+    transform: translateY(-20px);
   }
   100% {
-    top: 0;
-    left: 30px; /* Position on 'b' */
+    transform: translateY(0px);
   }
 }
 
-@keyframes bounceOnB {
+@keyframes settleAboveI {
   0% {
-    top: 0;
-    left: 30px;
+    transform: translateY(0);
   }
   50% {
-    top: -20px;
-    left: 50px;
+    transform: translateY(-80px);
+  }
+  75% {
+    transform: translateY(-65px);
   }
   100% {
-    top: 0;
-    left: 75px; /* Position on 'r' */
+    transform: translateY(-70px);
   }
 }
 
-@keyframes bounceOnR {
+/* Ball physics animations classes */
+.ball-fall {
+  animation: fallFromTop 0.5s cubic-bezier(0.6, 0.05, 0.8, 0.6) forwards;
+}
+
+.ball-bounce {
+  animation: bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.ball-settle {
+  animation: settleAboveI 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Ball pulse animation after settling */
+@keyframes pulseBall {
   0% {
-    top: 0;
-    left: 75px;
+    transform: translateY(-70px) scale(1);
+    box-shadow: 0 0 10px 2px rgba(59, 130, 246, 0.4);
   }
   50% {
-    top: -20px;
-    left: 100px;
+    transform: translateY(-70px) scale(1.1);
+    box-shadow: 0 0 12px 4px rgba(59, 130, 246, 0.7);
   }
   100% {
-    top: 0;
-    left: 130px; /* Position on 'j' */
+    transform: translateY(-70px) scale(1);
+    box-shadow: 0 0 10px 2px rgba(59, 130, 246, 0.4);
   }
 }
 
-@keyframes bounceOnJ {
+.ball-pulse {
+  animation: pulseBall 2s ease-in-out infinite;
+}
+
+/* Ball glow effect */
+.ball-glow {
+  box-shadow: 0 0 10px 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Squash effect for when ball hits letters */
+@keyframes squash {
   0% {
-    top: 0;
-    left: 130px;
+    transform: scaleY(1) scaleX(1);
+  }
+  25% {
+    transform: scaleY(0.7) scaleX(1.3);
   }
   50% {
-    top: -20px;
-    left: 160px;
+    transform: scaleY(1.2) scaleX(0.8);
+  }
+  75% {
+    transform: scaleY(0.9) scaleX(1.1);
   }
   100% {
-    top: 0;
-    left: 190px; /* Position on 'o' */
+    transform: scaleY(1) scaleX(1);
   }
 }
 
-@keyframes bounceOnO {
+.ball-squash {
+  animation: squash 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Subtle trail effect for the ball */
+@keyframes fadeOut {
   0% {
-    top: 0;
-    left: 190px;
-  }
-  50% {
-    top: -20px;
-    left: 220px;
+    opacity: 0.5;
   }
   100% {
-    top: 0;
-    left: 240px; /* Position on 'i' */
+    opacity: 0;
   }
 }
 
-@keyframes bounceToI {
-  0% {
-    top: 0;
-    left: 240px;
-  }
-  50% {
-    top: -15px;
-    left: 240px;
-  }
-  100% {
-    top: -30px;
-    left: 240px; /* Position directly above 'i' as the dot */
-    width: 8px;
-    height: 8px;
-    box-shadow: 0 0 15px rgba(14, 165, 233, 0.8);
-  }
-}
-
-/* Style for letter i to hide its dot once the ball settles */
-.letter-i {
-  position: relative;
-}
-
-.letter-i::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 8px;
-  background-color: currentColor;
-  border-radius: 50%;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-/* Hide the original dot on i when the ball animation completes */
-.dot-replaced .letter-i::after {
-  opacity: 0;
+.ball-trail {
+  animation: fadeOut 0.5s linear forwards;
 }
