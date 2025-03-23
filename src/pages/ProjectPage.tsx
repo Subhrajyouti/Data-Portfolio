@@ -1,8 +1,7 @@
-
 import { useParams, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import { ArrowLeft, ExternalLink, Github, Heart } from "lucide-react";
 import Footer from "@/components/Footer";
 import { useEffect, useState } from "react";
 
@@ -115,15 +114,44 @@ const projectsData: Project[] = [
 const ProjectPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const [project, setProject] = useState<Project | null>(null);
+  const [likeCount, setLikeCount] = useState(0);
+  const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
-    // Find the project with matching slug
     const foundProject = projectsData.find(p => p.slug === slug);
     setProject(foundProject || null);
     
-    // Scroll to top when project changes
     window.scrollTo(0, 0);
+
+    if (foundProject) {
+      const storedLikes = localStorage.getItem(`project-likes-${foundProject.slug}`);
+      const likes = storedLikes ? parseInt(storedLikes, 10) : 0;
+      setLikeCount(likes);
+
+      const userLiked = localStorage.getItem(`user-liked-${foundProject.slug}`) === 'true';
+      setHasLiked(userLiked);
+    }
   }, [slug]);
+
+  const handleLike = () => {
+    if (!project) return;
+    
+    if (!hasLiked) {
+      const newLikeCount = likeCount + 1;
+      setLikeCount(newLikeCount);
+      setHasLiked(true);
+      
+      localStorage.setItem(`project-likes-${project.slug}`, newLikeCount.toString());
+      localStorage.setItem(`user-liked-${project.slug}`, 'true');
+    } else {
+      const newLikeCount = Math.max(0, likeCount - 1);
+      setLikeCount(newLikeCount);
+      setHasLiked(false);
+      
+      localStorage.setItem(`project-likes-${project.slug}`, newLikeCount.toString());
+      localStorage.setItem(`user-liked-${project.slug}`, 'false');
+    }
+  };
 
   if (!project) {
     return (
@@ -150,132 +178,144 @@ const ProjectPage = () => {
               Subhrajyoti<span className="text-primary">.</span>
             </Link>
             
-            <Button asChild variant="ghost" size="sm" className="gap-1">
-              <Link to="/#projects">
-                <ArrowLeft className="h-4 w-4" />
-                <span>Back to Projects</span>
-              </Link>
-            </Button>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center">
+                <Button 
+                  variant={hasLiked ? "default" : "outline"} 
+                  size="sm" 
+                  className="gap-1 group"
+                  onClick={handleLike}
+                >
+                  <Heart 
+                    className={`h-4 w-4 ${hasLiked ? 'fill-current' : 'group-hover:fill-current group-hover:fill-opacity-50'}`} 
+                  />
+                  <span>{likeCount}</span>
+                </Button>
+              </div>
+
+              <Button asChild variant="ghost" size="sm" className="gap-1">
+                <Link to="/#projects">
+                  <ArrowLeft className="h-4 w-4" />
+                  <span>Back to Projects</span>
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
       
-      <main className="flex-grow">
-        {/* Hero */}
-        <div className="relative h-96">
-          <div className="absolute inset-0">
-            <img 
-              src={project.image} 
-              alt={project.title} 
-              className="h-full w-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
-          </div>
-          
-          <div className="absolute bottom-0 left-0 right-0 p-8">
-            <div className="max-w-7xl mx-auto">
-              <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
-              <p className="text-xl text-muted-foreground max-w-2xl">{project.description}</p>
-              
-              <div className="flex flex-wrap gap-2 mt-6">
-                {project.tags.map((tag, index) => (
-                  <Badge key={index} variant="secondary">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-              
-              <div className="flex gap-4 mt-8">
-                {project.github && (
-                  <Button asChild variant="default" size="sm" className="gap-2">
-                    <a href={project.github} target="_blank" rel="noopener noreferrer">
-                      <Github className="h-4 w-4" />
-                      View Code
-                    </a>
-                  </Button>
-                )}
-                
-                {project.live && (
-                  <Button asChild variant="outline" size="sm" className="gap-2">
-                    <a href={project.live} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4" />
-                      Live Demo
-                    </a>
-                  </Button>
-                )}
-              </div>
-            </div>
-          </div>
+      <div className="relative h-96">
+        <div className="absolute inset-0">
+          <img 
+            src={project.image} 
+            alt={project.title} 
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
         </div>
         
-        {/* Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2">
-              <h2 className="text-2xl font-semibold mb-6">Project Overview</h2>
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <p>{project.fullDescription}</p>
-              </div>
-              
-              <h2 className="text-2xl font-semibold mt-12 mb-6">Key Insights & Impact</h2>
-              <ul className="space-y-4">
-                {project.insights.map((insight, index) => (
-                  <li key={index} className="flex gap-3">
-                    <div className="mt-1 h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                      <div className="h-2 w-2 rounded-full bg-primary" />
-                    </div>
-                    <p>{insight}</p>
-                  </li>
-                ))}
-              </ul>
+        <div className="absolute bottom-0 left-0 right-0 p-8">
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
+            <p className="text-xl text-muted-foreground max-w-2xl">{project.description}</p>
+            
+            <div className="flex flex-wrap gap-2 mt-6">
+              {project.tags.map((tag, index) => (
+                <Badge key={index} variant="secondary">
+                  {tag}
+                </Badge>
+              ))}
             </div>
             
-            <div className="lg:col-span-1">
-              <div className="sticky top-24 space-y-8">
-                <div className="rounded-xl border border-border/50 overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="w-full aspect-video object-cover"
-                  />
+            <div className="flex gap-4 mt-8">
+              {project.github && (
+                <Button asChild variant="default" size="sm" className="gap-2">
+                  <a href={project.github} target="_blank" rel="noopener noreferrer">
+                    <Github className="h-4 w-4" />
+                    View Code
+                  </a>
+                </Button>
+              )}
+              
+              {project.live && (
+                <Button asChild variant="outline" size="sm" className="gap-2">
+                  <a href={project.live} target="_blank" rel="noopener noreferrer">
+                    <ExternalLink className="h-4 w-4" />
+                    Live Demo
+                  </a>
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="lg:col-span-2">
+            <h2 className="text-2xl font-semibold mb-6">Project Overview</h2>
+            <div className="prose prose-lg dark:prose-invert max-w-none">
+              <p>{project.fullDescription}</p>
+            </div>
+            
+            <h2 className="text-2xl font-semibold mt-12 mb-6">Key Insights & Impact</h2>
+            <ul className="space-y-4">
+              {project.insights.map((insight, index) => (
+                <li key={index} className="flex gap-3">
+                  <div className="mt-1 h-5 w-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <div className="h-2 w-2 rounded-full bg-primary" />
+                  </div>
+                  <p>{insight}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <div className="lg:col-span-1">
+            <div className="sticky top-24 space-y-8">
+              <div className="rounded-xl border border-border/50 overflow-hidden">
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="w-full aspect-video object-cover"
+                />
+              </div>
+              
+              <div className="rounded-xl border border-border/50 p-6 space-y-4">
+                <h3 className="text-lg font-medium">Technologies Used</h3>
+                <div className="flex flex-wrap gap-2">
+                  {project.tags.map((tag, index) => (
+                    <Badge key={index} variant="outline">
+                      {tag}
+                    </Badge>
+                  ))}
                 </div>
-                
-                <div className="rounded-xl border border-border/50 p-6 space-y-4">
-                  <h3 className="text-lg font-medium">Technologies Used</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag, index) => (
-                      <Badge key={index} variant="outline">
-                        {tag}
-                      </Badge>
+              </div>
+              
+              <div className="rounded-xl border border-border/50 p-6 space-y-4">
+                <h3 className="text-lg font-medium">Related Projects</h3>
+                <div className="space-y-3">
+                  {projectsData
+                    .filter(p => p.id !== project.id)
+                    .slice(0, 3)
+                    .map((relatedProject) => (
+                      <Link 
+                        key={relatedProject.id} 
+                        to={`/project/${relatedProject.slug}`}
+                        className="block p-3 rounded-lg hover:bg-muted/50 transition-colors"
+                      >
+                        <h4 className="font-medium">{relatedProject.title}</h4>
+                        <p className="text-sm text-muted-foreground line-clamp-1">
+                          {relatedProject.description}
+                        </p>
+                      </Link>
                     ))}
-                  </div>
-                </div>
-                
-                <div className="rounded-xl border border-border/50 p-6 space-y-4">
-                  <h3 className="text-lg font-medium">Related Projects</h3>
-                  <div className="space-y-3">
-                    {projectsData
-                      .filter(p => p.id !== project.id)
-                      .slice(0, 3)
-                      .map((relatedProject) => (
-                        <Link 
-                          key={relatedProject.id} 
-                          to={`/project/${relatedProject.slug}`}
-                          className="block p-3 rounded-lg hover:bg-muted/50 transition-colors"
-                        >
-                          <h4 className="font-medium">{relatedProject.title}</h4>
-                          <p className="text-sm text-muted-foreground line-clamp-1">
-                            {relatedProject.description}
-                          </p>
-                        </Link>
-                      ))}
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
       
       <Footer />
     </div>

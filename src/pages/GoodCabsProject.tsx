@@ -197,56 +197,45 @@ const GoodCabsProject = () => {
                 </ul>
               </section>
                 
-             {/* Power BI Dashboard Section */}
-<section id="dashboard" className="scroll-mt-24 mb-16">
-  <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-    <Monitor className="text-primary" /> Power BI Dashboard
-    <a 
-      href="https://app.powerbi.com/view?r=eyJrIjoiMDIzZjRjYzMtNzk0YS00MzcwLWJkNGMtNjk3MzBlNDI0NjYyIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="ml-2 text-sm text-primary hover:underline flex items-center"
-    >
-      <ExternalLink className="h-4 w-4 mr-1" />
-      Click here if the Dashboard is not Working
-    </a>
-  </h2>
-  <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-1 border border-border/50 hover:border-primary/30 shadow-md">
-    <CardContent className="p-0">
-      <div className="aspect-video w-full">
-        <iframe 
-          title="GoodCabs" 
-          width="100%" 
-          height="100%" 
-          src="https://app.powerbi.com/view?r=eyJrIjoiNmEyZDcwYzMtNmI3NS00YmU1LTllZGMtMzNjMzM4MDU3NjkzIiwidCI6IjdjOTE3YzNkLTRhNTAtNDA5Mi1hNzdiLTE3MTM4OGJiNmY5NCJ9&embedImagePlaceholder=true&pageName=585fd9ca8c72c33d09d8" 
-          frameBorder="0" 
-          allowFullScreen 
-        />
-      </div>
-    </CardContent>
-  </Card>
-  
-  <div className="mt-6">
-    <h3 className="text-xl font-medium mb-4">Dashboard Highlights</h3>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <FeatureCard title="Trip volume analysis">
-        Understand demand fluctuations
-      </FeatureCard>
-      <FeatureCard title="New vs Repeat Passengers">
-        Analyze retention trends
-      </FeatureCard>
-      <FeatureCard title="City-Wise Revenue Performance">
-        Identify high-profit locations
-      </FeatureCard>
-      <FeatureCard title="Target vs Actual Performance">
-        Compare company goals vs real data
-      </FeatureCard>
-      <FeatureCard title="Custom Filters & Drilldowns">
-        Dynamic exploration by City, Month, Passenger Type
-      </FeatureCard>
-    </div>
-  </div>
-</section>
+              {/* Power BI Dashboard Section */}
+              <section id="dashboard" className="scroll-mt-24 mb-16">
+                <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+                  <Monitor className="text-primary" /> Power BI Dashboard
+                </h2>
+                <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 hover:-translate-y-1 border border-border/50 hover:border-primary/30 shadow-md">
+                  <CardContent className="p-0">
+                    <div className="aspect-video w-full">
+                      <iframe 
+                        title="GoodCabs Dashboard" 
+                        src="https://app.powerbi.com/reportEmbed?reportId=9e0825b7-06b5-4209-ae7d-df25d95de537&autoAuth=true&ctid=7c917c3d-4a50-4092-a77b-171388bb6f94" 
+                        className="w-full h-full border-none"
+                        allowFullScreen 
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                <div className="mt-6">
+                  <h3 className="text-xl font-medium mb-4">Dashboard Highlights</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FeatureCard title="Trip volume analysis">
+                      Understand demand fluctuations
+                    </FeatureCard>
+                    <FeatureCard title="New vs Repeat Passengers">
+                      Analyze retention trends
+                    </FeatureCard>
+                    <FeatureCard title="City-Wise Revenue Performance">
+                      Identify high-profit locations
+                    </FeatureCard>
+                    <FeatureCard title="Target vs Actual Performance">
+                      Compare company goals vs real data
+                    </FeatureCard>
+                    <FeatureCard title="Custom Filters & Drilldowns">
+                      Dynamic exploration by City, Month, Passenger Type
+                    </FeatureCard>
+                  </div>
+                </div>
+              </section>
                 
               {/* SQL Queries Section */}
               <section id="sql-queries" className="scroll-mt-24 mb-16">

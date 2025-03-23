@@ -1,35 +1,67 @@
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Github, Linkedin, Mail, Phone, Send } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
+import emailjs from '@emailjs/browser';
+
+// Store these in environment variables for security
+const EMAILJS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 'service_xm4lzc4';
+const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 'template_kyn8c97';
+const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || 'KlN_mLOb8qOn3RtDP';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    from_name: "",
+    from_email: "",
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  // Initialize EmailJS once when component mounts
+  useEffect(() => {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Validate form data
+      if (!formData.from_name || !formData.from_email || !formData.message) {
+        throw new Error("Please fill all required fields");
+      }
+      
+      // Send email using EmailJS
+      const result = await emailjs.sendForm(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        formRef.current as HTMLFormElement,
+        EMAILJS_PUBLIC_KEY
+      );
+      
+      console.log('Email successfully sent!', result.text);
       toast.success("Message sent successfully!");
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ from_name: "", from_email: "", message: "" });
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      toast.error(
+        typeof error === 'object' && error !== null && 'text' in error
+          ? `Failed to send message: ${(error as {text: string}).text}`
+          : "Failed to send message. Please try again later."
+      );
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -76,16 +108,16 @@ const ContactSection = () => {
         
         <div>
           <h3 className="text-2xl font-semibold mb-6">Send a Message</h3>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-1">
                 Your Name
               </label>
               <Input
                 id="name"
-                name="name"
+                name="from_name"
                 placeholder="John Doe"
-                value={formData.name}
+                value={formData.from_name}
                 onChange={handleChange}
                 required
                 className="rounded-md"
@@ -98,10 +130,10 @@ const ContactSection = () => {
               </label>
               <Input
                 id="email"
-                name="email"
+                name="from_email"
                 type="email"
                 placeholder="john@example.com"
-                value={formData.email}
+                value={formData.from_email}
                 onChange={handleChange}
                 required
                 className="rounded-md"

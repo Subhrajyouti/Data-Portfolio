@@ -12,8 +12,8 @@ There are several ways of editing your application.
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/433bd2fd-7c1a-49a1-8b65-d584a8b50bfa) and start prompting.
 
-Changes made via Lovable will be committed automatically to this repo.
-
+Changes made fvvia Lovable will be committed automatically to this repo.
+xx
 **Use your preferred IDE**
 
 If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.

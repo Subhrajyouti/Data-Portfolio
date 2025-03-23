@@ -1,25 +1,8 @@
 
 import { Github, Linkedin, Mail } from "lucide-react";
-import { useEffect, useState } from "react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const [viewCount, setViewCount] = useState<number>(0);
-  
-  useEffect(() => {
-    // Get the current view count from localStorage
-    const storedCount = localStorage.getItem("websiteViewCount");
-    let count = storedCount ? parseInt(storedCount, 10) : 0;
-    
-    // Increment the count for this page view
-    count += 1;
-    
-    // Save the updated count back to localStorage
-    localStorage.setItem("websiteViewCount", count.toString());
-    
-    // Update state
-    setViewCount(count);
-  }, []);
   
   return (
     <footer className="border-t border-border/50">
@@ -65,11 +48,6 @@ const Footer = () => {
         
         <div className="border-t border-border/30 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
           <p>© {currentYear} Subhrajyoti Mahanta. All rights reserved.</p>
-          <div className="mt-3 md:mt-0 flex items-center">
-            <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-medium">
-            Website Visit Counts {viewCount.toLocaleString()} 
-            </span>
-          </div>
         </div>
       </div>
     </footer>

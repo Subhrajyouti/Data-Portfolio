@@ -14,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 221.2 83% 53.3%;
+    --primary: 199 89% 57%; /* Sky blue: #33C3F0 in HSL */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -31,7 +31,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83% 53.3%;
+    --ring: 199 89% 57%; /* Sky blue for focus rings as well */
 
     --radius: 0.75rem;
   }
@@ -99,6 +99,42 @@
     to {
       transform: scaleX(0.3);
     }
+  }
+
+  /* Floating animation for the profile image */
+  @keyframes floating {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate(5px, 5px) rotate(1deg);
+    }
+    50% {
+      transform: translate(0, 8px) rotate(0deg);
+    }
+    75% {
+      transform: translate(-5px, 5px) rotate(-1deg);
+    }
+    100% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.7;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-floating {
+    animation: floating 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 4s ease-in-out infinite;
   }
 
   .glass {
