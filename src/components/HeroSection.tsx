@@ -8,21 +8,9 @@ const HeroSection = () => {
   const [imageLoading, setImageLoading] = useState(true);
   const [imageLoadingProgress, setImageLoadingProgress] = useState(0);
   const [showBall, setShowBall] = useState(false);
-  const [ballPosition, setBallPosition] = useState(-1); // -1: hidden, 0-6: animation steps
+  const [ballPosition, setBallPosition] = useState(-1); // -1: hidden, 0-5: animation steps
+  const [dotReplaced, setDotReplaced] = useState(false);
   const nameRef = useRef<HTMLSpanElement>(null);
-  const letterRefs = {
-    s: useRef<HTMLSpanElement>(null),
-    u: useRef<HTMLSpanElement>(null),
-    b: useRef<HTMLSpanElement>(null),
-    h: useRef<HTMLSpanElement>(null),
-    r: useRef<HTMLSpanElement>(null),
-    a: useRef<HTMLSpanElement>(null),
-    j: useRef<HTMLSpanElement>(null),
-    y: useRef<HTMLSpanElement>(null),
-    o: useRef<HTMLSpanElement>(null),
-    t: useRef<HTMLSpanElement>(null),
-    i: useRef<HTMLSpanElement>(null)
-  };
 
   useEffect(() => {
     setIsVisible(true);
@@ -55,17 +43,24 @@ const HeroSection = () => {
 
   const animateBallBounce = () => {
     // Define the sequence of letters to bounce on
-    const sequence = ['s', 'b', 'r', 'j', 'o', 'i'];
     let currentIndex = 0;
     
     const bounceInterval = setInterval(() => {
-      if (currentIndex < sequence.length) {
+      if (currentIndex < 6) {
         setBallPosition(currentIndex);
+        
+        // Set dotReplaced to true when the ball reaches the last position (i)
+        if (currentIndex === 5) {
+          setTimeout(() => {
+            setDotReplaced(true);
+          }, 450); // Just before the animation completes
+        }
+        
         currentIndex++;
       } else {
         clearInterval(bounceInterval);
       }
-    }, 400); // Time between bounces
+    }, 500); // Time between bounces - slightly increased for smoother perception
   };
 
   const scrollToProjects = () => {
@@ -100,7 +95,7 @@ const HeroSection = () => {
               </div>
               
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight md:leading-tight relative">
-                <span className="name-container relative" ref={nameRef}>
+                <span className={`name-container relative ${dotReplaced ? 'dot-replaced' : ''}`} ref={nameRef}>
                   {/* Animation ball */}
                   {showBall && (
                     <span 
@@ -110,22 +105,22 @@ const HeroSection = () => {
                   )}
                   
                   {/* Name with letter spans for animation targets */}
-                  <span className="letter" ref={letterRefs.s}>S</span>
-                  <span className="letter" ref={letterRefs.u}>u</span>
-                  <span className="letter" ref={letterRefs.b}>b</span>
-                  <span className="letter" ref={letterRefs.h}>h</span>
-                  <span className="letter" ref={letterRefs.r}>r</span>
-                  <span className="letter" ref={letterRefs.a}>a</span>
-                  <span className="letter" ref={letterRefs.j}>j</span>
-                  <span className="letter" ref={letterRefs.y}>y</span>
-                  <span className="letter" ref={letterRefs.o}>o</span>
-                  <span className="letter" ref={letterRefs.t}>t</span>
-                  <span className="letter" ref={letterRefs.i}>i</span>
+                  <span className="letter">S</span>
+                  <span className="letter">u</span>
+                  <span className="letter">b</span>
+                  <span className="letter">h</span>
+                  <span className="letter">r</span>
+                  <span className="letter">a</span>
+                  <span className="letter">j</span>
+                  <span className="letter">y</span>
+                  <span className="letter">o</span>
+                  <span className="letter">t</span>
+                  <span className="letter letter-i">i</span>
                 </span> <span className="text-gradient">Mahanta</span>
               </h1>
               
               <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
-               Turning Complex Datasets Into Actionable Insights
+                Turning Complex Datasets Into Actionable Insights
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 pt-2">

@@ -96,29 +96,29 @@ section[id] {
   }
 }
 
-/* Ball bounce animations for each letter */
+/* Ball bounce animations for each letter - improved for smoother animation */
 .bounce-0 {
-  animation: bounceOnS 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  animation: bounceOnS 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .bounce-1 {
-  animation: bounceOnB 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  animation: bounceOnB 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .bounce-2 {
-  animation: bounceOnR 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  animation: bounceOnR 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .bounce-3 {
-  animation: bounceOnJ 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  animation: bounceOnJ 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .bounce-4 {
-  animation: bounceOnO 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  animation: bounceOnO 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .bounce-5 {
-  animation: bounceToI 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+  animation: bounceToI 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 @keyframes bounceOnS {
@@ -206,18 +206,20 @@ section[id] {
     left: 240px;
   }
   100% {
-    top: -25px;
-    left: 240px; /* Position above 'i' as the dot */
+    top: -30px;
+    left: 240px; /* Position directly above 'i' as the dot */
+    width: 8px;
+    height: 8px;
     box-shadow: 0 0 15px rgba(14, 165, 233, 0.8);
   }
 }
 
 /* Style for letter i to hide its dot once the ball settles */
-.letter:nth-child(11) {
+.letter-i {
   position: relative;
 }
 
-.letter:nth-child(11)::after {
+.letter-i::after {
   content: "";
   position: absolute;
   top: 0;
@@ -231,6 +233,7 @@ section[id] {
   transition: opacity 0.3s ease;
 }
 
-.bounce-5 + .letter:nth-child(11)::after {
-  opacity: 0; /* Hide the original dot when the ball settles */
+/* Hide the original dot on i when the ball animation completes */
+.dot-replaced .letter-i::after {
+  opacity: 0;
 }
