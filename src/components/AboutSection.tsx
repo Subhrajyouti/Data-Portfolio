@@ -6,11 +6,25 @@ const AboutSection = () => {
   return (
     <section id="about" className="section-container">
       <h2 className="section-title">About Me</h2>
-      <div className="mt-12">
-        <div className="space-y-10">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-12">
+        <div className="lg:col-span-1">
+          <div className="sticky top-24">
+            <div className="relative overflow-hidden rounded-xl aspect-square">
+              <div className="absolute -inset-px border-2 border-primary/20 rounded-xl"></div>
+              {/* Replace placeholder with actual image */}
+              <img 
+                src="/about.jpg" 
+                alt="Subhrajyoti Mahanta" 
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <div className="lg:col-span-2 space-y-10">
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p className="text-lg text-muted-foreground leading-relaxed">
-            I am Subhrajyouti Mahanta, a Data Analyst with expertise in SQL, Python, R, Power BI, Tableau, and Excel. Currently pursuing a B.Tech at IIEST Shibpur, I have worked on LIDAR-based traffic analysis at IIT Guwahati and EV impact studies at DST-SERB, where I processed large-scale sensor data and developed insightful visualizations.
+            I am Subhrajyoti Mahanta, a Data Analyst with expertise in SQL, Python, R, Power BI, Tableau, and Excel. Currently pursuing a B.Tech at IIEST Shibpur, I have worked on LIDAR-based traffic analysis at IIT Guwahati and EV impact studies at DST-SERB, where I processed large-scale sensor data and developed insightful visualizations.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
               With a background in both technical implementation and data storytelling, I bridge the gap between raw data and strategic insights. I'm experienced in working with various stakeholders to understand their needs and deliver data-driven solutions that address real-world challenges.

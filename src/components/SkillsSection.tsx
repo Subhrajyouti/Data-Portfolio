@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { Database, Code, LineChart } from "lucide-react";
+import { Database, Code, LineChart, Server, Table, FileSpreadsheet, BarChart3, LayoutDashboard, PieChart, ArrowRightLeft, Briefcase, Braces, GanttChartSquare, Webhook, BookOpen, LucideIcon } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 
@@ -9,6 +8,7 @@ interface Skill {
   name: string;
   level: number; // 0-100
   tags: string[];
+  icon: React.ReactNode;
 }
 
 interface SkillCategory {
@@ -27,27 +27,32 @@ const skillCategories: SkillCategory[] = [
       { 
         name: "SQL", 
         level: 90,
-        tags: ["CTEs", "Window Functions", "Joins", "Pivot Tables"]
+        tags: ["CTEs", "Window Functions", "Joins", "Pivot Tables"],
+        icon: <Database className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "Python", 
         level: 75,
-        tags: ["Pandas", "NumPy", "Data Visualization", "Web Scraping"]
+        tags: ["Pandas", "NumPy", "Data Visualization", "Web Scraping"],
+        icon: <Braces className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "R", 
         level: 35,
-        tags: ["ggplot2", "dplyr", "Tidyverse", "Statistical Modeling"]
+        tags: ["ggplot2", "dplyr", "Tidyverse", "Statistical Modeling"],
+        icon: <BarChart3 className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "C", 
         level: 60,
-        tags: ["Data Structures", "Memory Management", "File Handling", "Algorithms"]
+        tags: ["Data Structures", "Memory Management", "File Handling", "Algorithms"],
+        icon: <Webhook className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "DAX", 
         level: 60,
-        tags: ["Measures", "Calculated Columns", "Time Intelligence", "Row Context"]
+        tags: ["Measures", "Calculated Columns", "Time Intelligence", "Row Context"],
+        icon: <ArrowRightLeft className="h-8 w-8 text-primary/80" />
       }
     ]
   },
@@ -59,17 +64,20 @@ const skillCategories: SkillCategory[] = [
       { 
         name: "PostgreSQL", 
         level: 85,
-        tags: ["CTEs", "JSONB", "Partitioning", "Advanced Window Functions"]
+        tags: ["CTEs", "JSONB", "Partitioning", "Advanced Window Functions"],
+        icon: <Server className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "SQLite", 
         level: 70,
-        tags: ["Lightweight Databases", "Transactions", "Indexing", "Query Optimization"]
+        tags: ["Lightweight Databases", "Transactions", "Indexing", "Query Optimization"],
+        icon: <Database className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "MySQL", 
         level: 65,
-        tags: ["Indexing", "Stored Procedures", "Query Optimization", "Transactions"]
+        tags: ["Indexing", "Stored Procedures", "Query Optimization", "Transactions"],
+        icon: <Table className="h-8 w-8 text-primary/80" />
       }
     ]
   },
@@ -81,42 +89,50 @@ const skillCategories: SkillCategory[] = [
       { 
         name: "Power BI", 
         level: 75,
-        tags: ["Data Modeling", "DAX", "Report Building", "Power Query"]
+        tags: ["Data Modeling", "DAX", "Report Building", "Power Query"],
+        icon: <LayoutDashboard className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "MS Excel", 
         level: 95,
-        tags: ["Pivot Tables", "VLOOKUP/XLOOKUP", "Power Query", "Macros"]
+        tags: ["Pivot Tables", "VLOOKUP/XLOOKUP", "Power Query", "Macros"],
+        icon: <FileSpreadsheet className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "Tableau", 
         level: 60,
-        tags: ["Calculated Fields", "Dashboard Design", "LOD Expressions", "Data Blending"]
+        tags: ["Calculated Fields", "Dashboard Design", "LOD Expressions", "Data Blending"],
+        icon: <PieChart className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "Pandas", 
         level: 80,
-        tags: ["Data Cleaning", "DataFrames", "GroupBy", "Merging & Joining"]
+        tags: ["Data Cleaning", "DataFrames", "GroupBy", "Merging & Joining"],
+        icon: <Table className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "NumPy", 
         level: 75,
-        tags: ["Arrays", "Broadcasting", "Linear Algebra", "Random Sampling"]
+        tags: ["Arrays", "Broadcasting", "Linear Algebra", "Random Sampling"],
+        icon: <GanttChartSquare className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "SciPy", 
         level: 70,
-        tags: ["Statistical Functions", "Optimization", "Signal Processing", "Integration"]
+        tags: ["Statistical Functions", "Optimization", "Signal Processing", "Integration"],
+        icon: <BookOpen className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "Matplotlib", 
         level: 85,
-        tags: ["Plot Customization", "Subplots", "Annotations", "3D Plotting"]
+        tags: ["Plot Customization", "Subplots", "Annotations", "3D Plotting"],
+        icon: <LineChart className="h-8 w-8 text-primary/80" />
       },
       { 
         name: "Seaborn", 
         level: 85,
-        tags: ["Statistical Visualizations", "Heatmaps", "Pair Plots", "Regression Plots"]
+        tags: ["Statistical Visualizations", "Heatmaps", "Pair Plots", "Regression Plots"],
+        icon: <BarChart3 className="h-8 w-8 text-primary/80" />
       }
     ]
   }
@@ -210,7 +226,10 @@ const SkillCard = ({ skill, delay }: SkillCardProps) => {
       style={{ animationDelay: `${delay}s` }}
     >
       <div className="flex items-center justify-between mb-4">
-        <h4 className="text-lg font-medium">{skill.name}</h4>
+        <div className="flex items-center gap-3">
+          {skill.icon}
+          <h4 className="text-lg font-medium">{skill.name}</h4>
+        </div>
         <div className="text-sm font-medium text-primary">
           {getProficiencyLabel(skill.level)}
         </div>

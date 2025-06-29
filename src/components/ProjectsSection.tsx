@@ -1,4 +1,5 @@
 
+
 import { ExternalLink } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,12 +18,28 @@ interface Project {
 
 const projects: Project[] = [
   {
+    id: 10,
+    title: "Solar Viability Assessment - Assam",
+    description: "Comprehensive feasibility study for residential rooftop solar under PM Surya Ghar Yojana using PVsyst modeling and financial analysis",
+    image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    tags: ["PVsyst", "Financial Modeling", "Solar Energy", "Policy Analysis"],
+    slug: "solar-viability-assam"
+  },
+  {
+    id: 11,
+    title: "Residential Solar Feasibility & Financial Model – Assam, India (PM Surya Ghar Yojana based)",
+    description: "Analyzing city performance to determine the best locations for business expansion using data-driven insights",
+    image: "/solar.jpg",
+    tags: ["Energy Analysis", "PvSyst Analysis", "Financial Modelling", "Meteriological Analysis"],
+    slug: "monday-coffee-project-copy"
+  },
+  {
     id: 9,
     title: "Monday Coffee Business Expansion Analysis",
     description: "Analyzing city performance to determine the best locations for business expansion using data-driven insights",
     image: "/coffee1.jpg",
     tags: ["SQL", "Data Analysis", "Weighted Scoring", "Decision Making"],
-    slug: "new-project"
+    slug: "monday-coffee-project"
   },
   {
     id: 8,
@@ -67,8 +84,12 @@ const ProjectCard = ({ project }: { project: Project }) => {
     ? "/goodcabs-analysis" 
     : project.slug === "data-job-market-analysis"
     ? "/data-job-market-analysis"
-    : project.slug === "new-project"
-    ? "/new-project"
+    : project.slug === "monday-coffee-project"
+    ? "/monday-coffee-project"
+    : project.slug === "residental-solar-analysis"
+    ? "/monday-coffee-project-copy"
+    : project.slug === "solar-viability-assam"
+    ? "/solar-viability-assam"
     : `/project/${project.slug}`;
 
   // Preload images 
@@ -127,3 +148,4 @@ const ProjectCard = ({ project }: { project: Project }) => {
 };
 
 export default ProjectsSection;
+
