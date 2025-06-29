@@ -10,7 +10,7 @@ import NotFound from "./pages/NotFound";
 import GoodCabsProject from "./pages/GoodCabsProject";
 import DataJobMarketProject from "./pages/DataJobMarketProject";
 import MondayCoffeeProject from "./pages/MondayCoffeeProject";
-import residentalsolaranalysis from "./pages/residental-solar-analysis";
+import ResidentialSolarAnalysis from "./pages/residental-solar-analysis";
 import SolarViabilityProject from "./pages/SolarViabilityProject";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import "./styles/global.css";
@@ -30,7 +30,7 @@ const App = () => (
             <Route path="/goodcabs-analysis" element={<GoodCabsProject />} />
             <Route path="/data-job-market-analysis" element={<DataJobMarketProject />} />
             <Route path="/monday-coffee-project" element={<MondayCoffeeProject />} />
-            <Route path="/residential-solar-analysis" element={<residentalsolaranalysis />} />
+            <Route path="/residential-solar-analysis" element={<ResidentialSolarAnalysis />} />
             <Route path="/solar-viability-assam" element={<SolarViabilityProject />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
