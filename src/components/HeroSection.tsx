@@ -69,7 +69,7 @@ const HeroSection = () => {
             >
               <div className="inline-block">
                 <span className="text-sm font-medium px-3 py-1 rounded-full bg-primary/10 text-primary">
-                  Data Analyst
+                 Analyst
                 </span>
               </div>
               

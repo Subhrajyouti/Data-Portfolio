@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,16 +36,19 @@ const ContactSection = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Basic form validation
+    
+    // Validate form data before setting isSubmitting to true
     if (!formData.from_name || !formData.from_email || !formData.message) {
       toast.error("Please fill all required fields");
       return;
     }
-
+    
     setIsSubmitting(true);
 
     try {
+      console.log("Sending email with data:", formData);
+      console.log("Using form element:", formRef.current);
+      
       // Send email using EmailJS
       const result = await emailjs.sendForm(
         EMAILJS_SERVICE_ID,
@@ -56,19 +60,19 @@ const ContactSection = () => {
       toast.success("Message sent successfully!");
       setFormData({ from_name: "", from_email: "", message: "" });
     } catch (error) {
-      console.error("Failed to send email:", error);
+      console.error('Failed to send email:', error);
+      
+      // More detailed error handling
       let errorMessage = "Failed to send message. Please try again later.";
-
-      if (typeof error === "object" && error !== null) {
-        if ("text" in error) {
-          errorMessage = `Failed to send message: ${(error as { text: string }).text}`;
-        } else if ("message" in error) {
-          errorMessage = `Failed to send message: ${
-            (error as { message: string }).message
-          }`;
+      
+      if (typeof error === 'object' && error !== null) {
+        if ('text' in error) {
+          errorMessage = `Failed to send message: ${(error as {text: string}).text}`;
+        } else if ('message' in error) {
+          errorMessage = `Failed to send message: ${(error as {message: string}).message}`;
         }
       }
-
+      
       toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);

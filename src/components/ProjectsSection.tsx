@@ -19,20 +19,13 @@ interface Project {
 const projects: Project[] = [
   {
     id: 10,
-    title: "Solar Viability Assessment - Assam",
+    title: "Residential Solar Feasibility & Financial Model (PM Surya Ghar Yojana based)",
     description: "Comprehensive feasibility study for residential rooftop solar under PM Surya Ghar Yojana using PVsyst modeling and financial analysis",
-    image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    image: "/solar.jpg",
     tags: ["PVsyst", "Financial Modeling", "Solar Energy", "Policy Analysis"],
     slug: "solar-viability-assam"
   },
-  {
-    id: 11,
-    title: "Residential Solar Feasibility & Financial Model – Assam, India (PM Surya Ghar Yojana based)",
-    description: "Analyzing city performance to determine the best locations for business expansion using data-driven insights",
-    image: "/solar.jpg",
-    tags: ["Energy Analysis", "PvSyst Analysis", "Financial Modelling", "Meteriological Analysis"],
-    slug: "monday-coffee-project-copy"
-  },
+  
   {
     id: 9,
     title: "Monday Coffee Business Expansion Analysis",
