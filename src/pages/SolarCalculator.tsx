@@ -167,13 +167,19 @@ const SolarCalculator: React.FC = () => {
     if (errors[field]) setErrors(prev=>({ ...prev, [field]:'' }));
   };
 
+  const handleCalculateAgain = () => {
+    setResult(null);
+    setFormData({ state: '', monthly: '', latlong: '' });
+    setErrors({});
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20">
       <Navbar />
       
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 mt-8">
           <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-2">Sunlytics</h1>
           <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">Precision Solar Insights for Your Home</p>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
@@ -186,7 +192,7 @@ const SolarCalculator: React.FC = () => {
           {/* Left Side - Form (hide when results are shown) */}
           {!result && (
             <div className="space-y-6">
-              <Card className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 8s ease-in-out infinite'}}>
+              <Card className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 20s ease-in-out infinite'}}>
                 <CardHeader>
                   <CardTitle className="text-2xl text-gray-900 dark:text-white flex items-center gap-2">
                     <Calculator className="h-6 w-6 text-blue-600" />
@@ -259,7 +265,7 @@ const SolarCalculator: React.FC = () => {
           <div className="space-y-6">
             {/* Loading Animation */}
             {loading && phaseIndex >= 0 && (
-              <Card className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl animate-fade-in" style={{animation: 'floating 8s ease-in-out infinite'}}>
+              <Card className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl animate-fade-in" style={{animation: 'floating 20s ease-in-out infinite'}}>
                 <CardContent className="p-8">
                   <div className="text-center mb-8">
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Analyzing Your Solar Potential</h3>
@@ -312,122 +318,135 @@ const SolarCalculator: React.FC = () => {
                 </CardContent>
               </Card>
             )}
-
-            {/* Results Cards */}
-            {!loading && result && (
-              <div className="grid gap-6 animate-fade-in col-span-full">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center">Your Solar Analysis</h2>
-                
-                {/* Solar Output Card */}
-                <Card className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 8s ease-in-out infinite'}}>
-                  <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
-                    <div className="flex items-center gap-3">
-                      <Zap className="h-8 w-8" />
-                      <CardTitle className="text-xl">Solar Output & Potential</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-6 bg-white/50 dark:bg-white/5 backdrop-blur">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{formatNum(result.recommended_kW)} kW</div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Recommended Load</p>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{formatNum(result.solarYield)} kWh/kWp</div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Solar Potential at Your Area (per year)</p>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{formatNum(result.annualEnergy)} kWh</div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Total Generation in Your System</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Financial Metrics Card */}
-                <Card className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 8s ease-in-out infinite 2s'}}>
-                  <CardHeader className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-t-lg">
-                    <div className="flex items-center gap-3">
-                      <DollarSign className="h-8 w-8" />
-                      <CardTitle className="text-xl">Financial Metrics</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-6 bg-white/50 dark:bg-white/5 backdrop-blur">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-300">Total System Cost:</span>
-                        <span className="font-semibold text-gray-900 dark:text-white">{formatCurrency(result.totalCost)}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-300">Total Subsidies:</span>
-                        <span className="font-semibold text-green-600 dark:text-green-400">{formatCurrency(result.subsidy)}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-300">Net Investment:</span>
-                        <span className="font-semibold text-blue-600 dark:text-blue-400">{formatCurrency(result.netCost)}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-300">Monthly Savings:</span>
-                        <span className="font-semibold text-green-600 dark:text-green-400">{formatCurrency(result.monthlySavings)}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-300">Annual Savings:</span>
-                        <span className="font-semibold text-green-600 dark:text-green-400">{formatCurrency(result.annualSavings)}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-300">Payback Period:</span>
-                        <span className="font-semibold text-blue-600 dark:text-blue-400">{formatNum(result.paybackYears)} years</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-300">IRR:</span>
-                        <span className="font-semibold text-purple-600 dark:text-purple-400">{formatNum(result.irrPercent)}%</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600 dark:text-gray-300">NPV:</span>
-                        <span className="font-semibold text-purple-600 dark:text-purple-400">{formatCurrency(result.npv)}</span>
-                      </div>
-                      <div className="col-span-full border-t border-white/20 pt-4 mt-4">
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-600 dark:text-gray-300 font-medium">25-Year Total Savings:</span>
-                          <span className="text-2xl font-bold text-green-600 dark:text-green-400">{formatCurrency(result.lifetimeSavings)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Environmental Impact Card */}
-                <Card className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 8s ease-in-out infinite 4s'}}>
-                  <CardHeader className="bg-gradient-to-r from-teal-500 to-green-500 text-white rounded-t-lg">
-                    <div className="flex items-center gap-3">
-                      <Leaf className="h-8 w-8" />
-                      <CardTitle className="text-xl">Environmental Impact</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="p-6 bg-white/50 dark:bg-white/5 backdrop-blur">
-                    <div className="grid grid-cols-2 gap-6">
-                      <div className="text-center">
-                        <div className="text-3xl font-bold text-teal-600 dark:text-teal-400">{formatNum(result.co2Avoided/1000, 1)}</div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Metric tons CO₂ avoided over 25 years</p>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-3xl font-bold text-green-600 dark:text-green-400">{result.treesSaved}</div>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">Trees equivalent planted</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
           </div>
         </div>
+
+        {/* Results Cards - Full Width, Side by Side */}
+        {!loading && result && (
+          <div className="space-y-8 animate-fade-in max-w-7xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center">Your Solar Analysis</h2>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              {/* Solar Output Card */}
+              <Card className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 20s ease-in-out infinite'}}>
+                <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
+                  <div className="flex items-center gap-3">
+                    <Zap className="h-8 w-8" />
+                    <CardTitle className="text-xl">Solar Output & Potential</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6 bg-white/50 dark:bg-white/5 backdrop-blur">
+                  <div className="space-y-4">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">{formatNum(result.recommended_kW)} kW</div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">Recommended Load</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{formatNum(result.solarYield)} kWh/kWp</div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">Solar Potential at Your Area (per year)</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">{formatNum(result.annualEnergy)} kWh</div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">Total Generation in Your System</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Financial Metrics Card */}
+              <Card className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 20s ease-in-out infinite 4s'}}>
+                <CardHeader className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-t-lg">
+                  <div className="flex items-center gap-3">
+                    <DollarSign className="h-8 w-8" />
+                    <CardTitle className="text-xl">Financial Metrics</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6 bg-white/50 dark:bg-white/5 backdrop-blur">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Total System Cost:</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{formatCurrency(result.totalCost)}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Total Subsidies:</span>
+                      <span className="font-semibold text-green-600 dark:text-green-400">{formatCurrency(result.subsidy)}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Net Investment:</span>
+                      <span className="font-semibold text-blue-600 dark:text-blue-400">{formatCurrency(result.netCost)}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Monthly Savings:</span>
+                      <span className="font-semibold text-green-600 dark:text-green-400">{formatCurrency(result.monthlySavings)}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Annual Savings:</span>
+                      <span className="font-semibold text-green-600 dark:text-green-400">{formatCurrency(result.annualSavings)}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Payback Period:</span>
+                      <span className="font-semibold text-blue-600 dark:text-blue-400">{formatNum(result.paybackYears)} years</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-300">IRR:</span>
+                      <span className="font-semibold text-purple-600 dark:text-purple-400">{formatNum(result.irrPercent)}%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-300">NPV:</span>
+                      <span className="font-semibold text-purple-600 dark:text-purple-400">{formatCurrency(result.npv)}</span>
+                    </div>
+                    <div className="border-t border-white/20 pt-3 mt-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">25-Year Total Savings:</span>
+                        <span className="text-lg font-bold text-green-600 dark:text-green-400">{formatCurrency(result.lifetimeSavings)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Environmental Impact Card */}
+              <Card className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 20s ease-in-out infinite 8s'}}>
+                <CardHeader className="bg-gradient-to-r from-teal-500 to-green-500 text-white rounded-t-lg">
+                  <div className="flex items-center gap-3">
+                    <Leaf className="h-8 w-8" />
+                    <CardTitle className="text-xl">Environmental Impact</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6 bg-white/50 dark:bg-white/5 backdrop-blur">
+                  <div className="space-y-6">
+                    <div className="text-center">
+                      <div className="text-4xl font-bold text-teal-600 dark:text-teal-400">{formatNum(result.co2Avoided/1000, 1)}</div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">Metric tons CO₂ avoided over 25 years</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-4xl font-bold text-green-600 dark:text-green-400">{result.treesSaved}</div>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">Trees equivalent planted</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Calculate Again Button */}
+            <div className="text-center mt-8">
+              <Button 
+                onClick={handleCalculateAgain}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold px-8 py-3 shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                <Calculator className="mr-2 h-5 w-5" />
+                Calculate Again
+              </Button>
+            </div>
+          </div>
+        )}
 
         {/* How It Works Section */}
         {!loading && result && (
           <div className="mt-16 max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12">How Our Calculator Works</h2>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg p-6 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 8s ease-in-out infinite'}}>
+              <div className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg p-6 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 20s ease-in-out infinite'}}>
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-orange-100/50 dark:bg-orange-900/50 backdrop-blur rounded-lg flex items-center justify-center">
                     <Database className="h-6 w-6 text-orange-600 dark:text-orange-400" />
@@ -440,7 +459,7 @@ const SolarCalculator: React.FC = () => {
                 </p>
               </div>
 
-              <div className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg p-6 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 8s ease-in-out infinite 2s'}}>
+              <div className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg p-6 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 20s ease-in-out infinite 4s'}}>
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-yellow-100/50 dark:bg-yellow-900/50 backdrop-blur rounded-lg flex items-center justify-center">
                     <Zap className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
@@ -453,7 +472,7 @@ const SolarCalculator: React.FC = () => {
                 </p>
               </div>
 
-              <div className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg p-6 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 8s ease-in-out infinite 4s'}}>
+              <div className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg p-6 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 20s ease-in-out infinite 8s'}}>
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-green-100/50 dark:bg-green-900/50 backdrop-blur rounded-lg flex items-center justify-center">
                     <BarChart3 className="h-6 w-6 text-green-600 dark:text-green-400" />
@@ -466,7 +485,7 @@ const SolarCalculator: React.FC = () => {
                 </p>
               </div>
 
-              <div className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg p-6 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 8s ease-in-out infinite 6s'}}>
+              <div className="glass backdrop-blur-lg bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-lg p-6 shadow-2xl hover:shadow-3xl transition-all duration-300" style={{animation: 'floating 20s ease-in-out infinite 12s'}}>
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-12 h-12 bg-blue-100/50 dark:bg-blue-900/50 backdrop-blur rounded-lg flex items-center justify-center">
                     <Award className="h-6 w-6 text-blue-600 dark:text-blue-400" />
