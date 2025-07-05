@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
-import { Loader2, Sun, Calculator, DollarSign, Leaf, Zap, TrendingUp, Home, Award } from 'lucide-react';
+import { Loader2, Sun, Calculator, DollarSign, Leaf, Zap, TrendingUp, Database, BarChart3, Award } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { useToast } from '@/hooks/use-toast';
@@ -56,27 +55,31 @@ const INDIAN_STATES = [
 const phases = [
   { 
     key: 'phase1', 
-    label: 'Analyzing solar data for your location...', 
-    icon: <Sun className="h-6 w-6 text-amber-400" />,
-    color: 'from-amber-400 to-orange-500'
+    label: 'Solar Data Collection', 
+    description: 'Gathering precise solar radiation data for your location',
+    icon: <Database className="h-8 w-8 text-orange-500" />,
+    color: 'from-orange-400 to-red-500'
   },
   { 
     key: 'phase2', 
-    label: 'Calculating solar potential at your location...', 
-    icon: <Calculator className="h-6 w-6 text-blue-400" />,
-    color: 'from-blue-400 to-cyan-500'
+    label: 'Solar Energy Calculation', 
+    description: 'Estimating your rooftop solar energy production',
+    icon: <Sun className="h-8 w-8 text-yellow-500" />,
+    color: 'from-yellow-400 to-orange-500'
   },
   { 
     key: 'phase3', 
-    label: 'Creating detailed financial modeling for your usage...', 
-    icon: <DollarSign className="h-6 w-6 text-green-400" />,
+    label: 'Financial Modelling', 
+    description: 'Calculating costs, subsidies and savings',
+    icon: <BarChart3 className="h-8 w-8 text-green-500" />,
     color: 'from-green-400 to-emerald-500'
   },
   { 
     key: 'phase4', 
-    label: 'Preparing your personalized solar report...', 
-    icon: <Leaf className="h-6 w-6 text-green-600" />,
-    color: 'from-green-600 to-teal-500'
+    label: 'Personalized Results', 
+    description: 'Preparing your detailed solar report',
+    icon: <Award className="h-8 w-8 text-blue-500" />,
+    color: 'from-blue-400 to-purple-500'
   }
 ];
 
@@ -108,10 +111,10 @@ const SolarCalculator: React.FC = () => {
     setResult(null);
     setPhaseIndex(-1);
 
-    // Step through phases with enhanced timing
+    // Step through phases
     for (let i=0; i<phases.length; i++) {
       setPhaseIndex(i);
-      await new Promise(res => setTimeout(res, 3000)); // Reduced to 3 seconds per phase
+      await new Promise(res => setTimeout(res, 2500));
     }
 
     try {
@@ -143,10 +146,10 @@ const SolarCalculator: React.FC = () => {
         co2Avoided: data.co2_avoided_kg,
         treesSaved: data.trees_saved_equivalent
       });
-      toast({ title:'Calculation Complete', description:'Your personalized solar report is ready!' });
+      toast({ title:'Analysis Complete', description:'Your solar report is ready!' });
     } catch(err) {
       console.error(err);
-      toast({ title:'Error', description:'Calculation failed. Please try again.', variant:'destructive' });
+      toast({ title:'Error', description:'Analysis failed. Please try again.', variant:'destructive' });
     } finally {
       setLoading(false);
       setPhaseIndex(-1);
@@ -159,92 +162,74 @@ const SolarCalculator: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
       <Navbar />
       
-      {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
-        <div className="container mx-auto px-4 py-20">
-          <div className="text-center mb-16 relative">
-            {/* Animated Sun */}
-            <div className="inline-flex items-center justify-center mb-6">
-              <div className="relative">
-                <Sun className="h-16 w-16 text-amber-400 animate-pulse" />
-                <div className="absolute inset-0 h-16 w-16 text-amber-400/30 animate-ping">
-                  <Sun className="h-16 w-16" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="inline-block px-4 py-2 bg-blue-500/20 backdrop-blur-sm rounded-full border border-blue-400/30 mb-4">
-                <span className="text-blue-300 text-sm font-medium">Sunlytics</span>
-              </div>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-white via-blue-100 to-amber-200 bg-clip-text text-transparent leading-tight">
-                Analyze Your Solar
-                <br />
-                <span className="bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-                  Potential
-                </span>
-              </h1>
-              <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-                Discover your solar output, financial benefits, and environmental impact with our advanced analytics
-              </p>
-            </div>
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <Sun className="h-8 w-8 text-orange-500" />
+            <h1 className="text-4xl font-bold text-gray-900">Solar Calculator</h1>
           </div>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Discover your solar potential with precise calculations and financial insights
+          </p>
+        </div>
 
-          {/* Form Section */}
-          <div className="max-w-md mx-auto mb-16">
-            <Card className="backdrop-blur-lg bg-white/10 border-white/20 shadow-2xl">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl text-white flex items-center justify-center gap-2">
-                  <Calculator className="h-6 w-6 text-blue-400" />
-                  Solar Analysis
+        {/* Main Content */}
+        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+          {/* Left Side - Form */}
+          <div className="space-y-6">
+            <Card className="shadow-lg border-0">
+              <CardHeader>
+                <CardTitle className="text-2xl text-gray-900 flex items-center gap-2">
+                  <Calculator className="h-6 w-6 text-blue-600" />
+                  Calculate Your Solar Potential
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
-                    <Label className="text-white font-medium">State *</Label>
+                    <Label className="text-gray-700 font-medium">State *</Label>
                     <Select value={formData.state} onValueChange={v=>handleChange('state',v)}>
-                      <SelectTrigger className="bg-white/10 border-white/20 text-white backdrop-blur-sm">
+                      <SelectTrigger className="h-12">
                         <SelectValue placeholder="Select your state" />
                       </SelectTrigger>
                       <SelectContent>
                         {INDIAN_STATES.map(s=><SelectItem key={s} value={s}>{s}</SelectItem>)}
                       </SelectContent>
                     </Select>
-                    {errors.state && <p className="text-red-400 text-sm">{errors.state}</p>}
+                    {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-white font-medium">Monthly Electricity Units (kWh) *</Label>
+                    <Label className="text-gray-700 font-medium">Monthly Electricity Units (kWh) *</Label>
                     <Input 
                       type="number" 
                       placeholder="e.g. 300" 
                       value={formData.monthly} 
                       onChange={e=>handleChange('monthly',e.target.value)}
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60 backdrop-blur-sm"
+                      className="h-12"
                     />
-                    {errors.monthly && <p className="text-red-400 text-sm">{errors.monthly}</p>}
+                    {errors.monthly && <p className="text-red-500 text-sm">{errors.monthly}</p>}
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-white font-medium">Location Coordinates *</Label>
+                    <Label className="text-gray-700 font-medium">Location Coordinates *</Label>
                     <Input 
                       placeholder="lat,lon (e.g. 28.6139,77.2090)" 
                       value={formData.latlong} 
                       onChange={e=>handleChange('latlong',e.target.value)}
-                      className="bg-white/10 border-white/20 text-white placeholder:text-white/60 backdrop-blur-sm"
+                      className="h-12"
                     />
-                    <p className="text-white/60 text-xs">Get coordinates from Google Maps</p>
-                    {errors.latlong && <p className="text-red-400 text-sm">{errors.latlong}</p>}
+                    <p className="text-gray-500 text-sm">Get coordinates from Google Maps</p>
+                    {errors.latlong && <p className="text-red-500 text-sm">{errors.latlong}</p>}
                   </div>
 
                   <Button 
                     type="submit" 
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3 transition-all duration-300 transform hover:scale-105" 
+                    className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold" 
                     disabled={loading}
                   >
                     {loading ? (
@@ -264,202 +249,205 @@ const SolarCalculator: React.FC = () => {
             </Card>
           </div>
 
-          {/* Enhanced Loading Animation */}
-          {loading && phaseIndex >= 0 && (
-            <div className="max-w-2xl mx-auto mb-16">
-              <Card className="backdrop-blur-lg bg-white/10 border-white/20 shadow-2xl overflow-hidden">
+          {/* Right Side - Results */}
+          <div className="space-y-6">
+            {/* Loading Animation */}
+            {loading && phaseIndex >= 0 && (
+              <Card className="shadow-lg border-0 animate-fade-in">
                 <CardContent className="p-8">
-                  <div className="text-center mb-6">
-                    <h3 className="text-2xl font-bold text-white mb-2">Processing Your Data</h3>
-                    <p className="text-slate-300">Please wait while we analyze your solar potential</p>
+                  <div className="text-center mb-8">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Analyzing Your Solar Potential</h3>
+                    <p className="text-gray-600">Please wait while we process your data</p>
                   </div>
                   
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     {phases.map((phase, index) => (
                       <div 
                         key={phase.key}
                         className={`flex items-center gap-4 p-4 rounded-lg transition-all duration-500 ${
                           index === phaseIndex 
-                            ? 'bg-gradient-to-r ' + phase.color + ' bg-opacity-20 scale-105 shadow-lg' 
+                            ? 'bg-gradient-to-r ' + phase.color + ' bg-opacity-10 scale-105 border border-blue-200' 
                             : index < phaseIndex 
-                              ? 'bg-green-500/20 opacity-75'
-                              : 'bg-white/5 opacity-50'
+                              ? 'bg-green-50 opacity-75 border border-green-200'
+                              : 'bg-gray-50 opacity-50'
                         }`}
                       >
-                        <div className={`relative ${index === phaseIndex ? 'animate-pulse' : ''}`}>
+                        <div className={`${index === phaseIndex ? 'animate-pulse' : ''}`}>
                           {index < phaseIndex ? (
-                            <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
-                              <Award className="h-4 w-4 text-white" />
+                            <div className="h-12 w-12 bg-green-500 rounded-full flex items-center justify-center">
+                              <Award className="h-6 w-6 text-white" />
                             </div>
                           ) : (
-                            <div className="h-8 w-8 flex items-center justify-center">
+                            <div className="h-12 w-12 flex items-center justify-center">
                               {phase.icon}
                             </div>
                           )}
                         </div>
                         <div className="flex-1">
-                          <span className={`text-lg font-medium ${
-                            index === phaseIndex ? 'text-white' : 'text-slate-300'
-                          }`}>
-                            {phase.label}
-                          </span>
+                          <h4 className="font-semibold text-gray-900">{phase.label}</h4>
+                          <p className="text-sm text-gray-600">{phase.description}</p>
                         </div>
                         {index === phaseIndex && (
-                          <Loader2 className="h-5 w-5 animate-spin text-white" />
+                          <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
                         )}
                       </div>
                     ))}
                   </div>
                   
                   <div className="mt-6">
-                    <div className="flex justify-between text-sm text-slate-300 mb-2">
-                      <span>Progress</span>
-                      <span>{Math.round(((phaseIndex + 1) / phases.length) * 100)}%</span>
-                    </div>
                     <Progress 
                       value={((phaseIndex + 1) / phases.length) * 100} 
-                      className="h-2 bg-white/10"
+                      className="h-2"
                     />
+                    <p className="text-center text-sm text-gray-600 mt-2">
+                      {Math.round(((phaseIndex + 1) / phases.length) * 100)}% Complete
+                    </p>
                   </div>
                 </CardContent>
               </Card>
-            </div>
-          )}
+            )}
 
-          {/* Enhanced Results Section */}
-          {!loading && result && (
-            <div className="animate-fade-in">
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-white mb-4">Your Solar Analysis Report</h2>
-                <p className="text-xl text-slate-300">Here's your personalized solar potential analysis</p>
-              </div>
-
-              <div className="grid gap-8 lg:grid-cols-3 max-w-7xl mx-auto">
+            {/* Results Cards */}
+            {!loading && result && (
+              <div className="space-y-6 animate-fade-in">
+                <h2 className="text-2xl font-bold text-gray-900 text-center">Your Solar Analysis</h2>
+                
                 {/* Solar Output Card */}
-                <Card className="backdrop-blur-lg bg-gradient-to-br from-amber-500/20 to-orange-600/20 border-amber-400/30 shadow-2xl hover:scale-105 transition-all duration-300">
-                  <CardHeader className="text-center pb-4">
-                    <div className="mx-auto w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center mb-4">
-                      <Sun className="h-8 w-8 text-white" />
+                <Card className="shadow-lg border-0 hover:shadow-xl transition-shadow">
+                  <CardHeader className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-t-lg">
+                    <div className="flex items-center gap-3">
+                      <Sun className="h-8 w-8" />
+                      <CardTitle className="text-xl">Solar Output</CardTitle>
                     </div>
-                    <CardTitle className="text-2xl text-white">Solar Output & Recommendation</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="bg-white/10 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-slate-300">Solar Yield per kWp/year:</span>
-                        <strong className="text-2xl text-amber-400">{formatNum(result.solarYield)} kWh</strong>
+                  <CardContent className="p-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-orange-600">{formatNum(result.recommended_kW)} kW</div>
+                        <p className="text-sm text-gray-600">Recommended Size</p>
                       </div>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-slate-300">Recommended System Size:</span>
-                        <strong className="text-2xl text-orange-400">{formatNum(result.recommended_kW)} kW</strong>
-                      </div>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-slate-300">Annual Generation:</span>
-                        <strong className="text-2xl text-amber-300">{formatNum(result.annualEnergy)} kWh</strong>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-orange-600">{formatNum(result.annualEnergy)} kWh</div>
+                        <p className="text-sm text-gray-600">Annual Generation</p>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Financial Card */}
-                <Card className="backdrop-blur-lg bg-gradient-to-br from-green-500/20 to-emerald-600/20 border-green-400/30 shadow-2xl hover:scale-105 transition-all duration-300">
-                  <CardHeader className="text-center pb-4">
-                    <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center mb-4">
-                      <TrendingUp className="h-8 w-8 text-white" />
+                <Card className="shadow-lg border-0 hover:shadow-xl transition-shadow">
+                  <CardHeader className="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-t-lg">
+                    <div className="flex items-center gap-3">
+                      <TrendingUp className="h-8 w-8" />
+                      <CardTitle className="text-xl">Financial Benefits</CardTitle>
                     </div>
-                    <CardTitle className="text-2xl text-white">Financial Analysis</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="bg-white/10 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-slate-300">Total Investment:</span>
-                        <strong className="text-xl text-red-400">{formatCurrency(result.totalCost)}</strong>
+                  <CardContent className="p-6">
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Net Investment:</span>
+                        <span className="text-xl font-bold text-green-600">{formatCurrency(result.netCost)}</span>
                       </div>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-slate-300">Government Subsidy:</span>
-                        <strong className="text-xl text-green-400">-{formatCurrency(result.subsidy)}</strong>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Monthly Savings:</span>
+                        <span className="text-xl font-bold text-green-600">{formatCurrency(result.monthlySavings)}</span>
                       </div>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-slate-300">Net Investment:</span>
-                        <strong className="text-2xl text-green-300">{formatCurrency(result.netCost)}</strong>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-600">Payback Period:</span>
+                        <span className="text-xl font-bold text-blue-600">{formatNum(result.paybackYears)} years</span>
                       </div>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-slate-300">Monthly Savings:</span>
-                        <strong className="text-xl text-emerald-400">{formatCurrency(result.monthlySavings)}</strong>
-                      </div>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-slate-300">Payback Period:</span>
-                        <strong className="text-xl text-blue-400">{formatNum(result.paybackYears)} years</strong>
-                      </div>
-                    </div>
-                    <div className="bg-green-500/20 rounded-lg p-4 border border-green-400/50">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-slate-300">25-Year Savings:</span>
-                        <strong className="text-2xl text-green-300">{formatCurrency(result.lifetimeSavings)}</strong>
+                      <div className="border-t pt-4">
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-600">25-Year Savings:</span>
+                          <span className="text-2xl font-bold text-green-600">{formatCurrency(result.lifetimeSavings)}</span>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
                 {/* Environmental Card */}
-                <Card className="backdrop-blur-lg bg-gradient-to-br from-teal-500/20 to-green-600/20 border-teal-400/30 shadow-2xl hover:scale-105 transition-all duration-300">
-                  <CardHeader className="text-center pb-4">
-                    <div className="mx-auto w-16 h-16 bg-gradient-to-br from-teal-400 to-green-500 rounded-full flex items-center justify-center mb-4">
-                      <Leaf className="h-8 w-8 text-white" />
+                <Card className="shadow-lg border-0 hover:shadow-xl transition-shadow">
+                  <CardHeader className="bg-gradient-to-r from-teal-500 to-green-500 text-white rounded-t-lg">
+                    <div className="flex items-center gap-3">
+                      <Leaf className="h-8 w-8" />
+                      <CardTitle className="text-xl">Environmental Impact</CardTitle>
                     </div>
-                    <CardTitle className="text-2xl text-white">Environmental Impact</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="bg-white/10 rounded-lg p-6 text-center">
-                      <div className="text-4xl font-bold text-teal-400 mb-2">
-                        {formatNum(result.co2Avoided/1000, 1)}
+                  <CardContent className="p-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-teal-600">{formatNum(result.co2Avoided/1000, 1)}</div>
+                        <p className="text-sm text-gray-600">Metric tons CO₂ avoided</p>
                       </div>
-                      <div className="text-slate-300">Metric tons CO₂ avoided</div>
-                      <div className="text-sm text-teal-300 mt-2">over 25 years</div>
-                    </div>
-                    <div className="bg-white/10 rounded-lg p-6 text-center">
-                      <div className="text-4xl font-bold text-green-400 mb-2">
-                        {result.treesSaved}
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-600">{result.treesSaved}</div>
+                        <p className="text-sm text-gray-600">Trees equivalent</p>
                       </div>
-                      <div className="text-slate-300">Trees equivalent</div>
-                      <div className="text-sm text-green-300 mt-2">carbon offset impact</div>
                     </div>
                   </CardContent>
                 </Card>
               </div>
+            )}
+          </div>
+        </div>
 
-              {/* CTA Section */}
-              <div className="text-center mt-16">
-                <Card className="backdrop-blur-lg bg-gradient-to-r from-blue-500/20 to-purple-600/20 border-blue-400/30 shadow-2xl max-w-2xl mx-auto">
-                  <CardContent className="p-8">
-                    <Home className="h-12 w-12 text-blue-400 mx-auto mb-4" />
-                    <h3 className="text-2xl font-bold text-white mb-4">Ready to Go Solar?</h3>
-                    <p className="text-slate-300 mb-6">
-                      Based on your analysis, solar energy could save you <strong className="text-green-400">{formatCurrency(result.lifetimeSavings)}</strong> over 25 years while helping the environment.
-                    </p>
-                    <Button 
-                      className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold px-8 py-3 transition-all duration-300 transform hover:scale-105"
-                      onClick={() => window.open('mailto:contact@sunlytics.com?subject=Solar Installation Inquiry', '_blank')}
-                    >
-                      Get Installation Quote
-                    </Button>
-                  </CardContent>
-                </Card>
+        {/* How It Works Section */}
+        <div className="mt-16 max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">How Our Calculator Works</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                  <Database className="h-6 w-6 text-orange-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Solar Data Collection</h3>
               </div>
+              <p className="text-gray-600">
+                We gather precise solar radiation data for your exact location using trusted global sources (NREL). 
+                This ensures highly accurate and personalized results.
+              </p>
             </div>
-          )}
+
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                  <Sun className="h-6 w-6 text-yellow-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Solar Energy Calculation</h3>
+              </div>
+              <p className="text-gray-600">
+                Advanced simulations estimate exactly how much solar energy your rooftop system can produce each year, 
+                based on your location and standard equipment.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <BarChart3 className="h-6 w-6 text-green-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Financial Modelling</h3>
+              </div>
+              <p className="text-gray-600">
+                Detailed financial calculations factor in your state's electricity tariffs, subsidies, and costs, 
+                clearly showing your potential savings, payback period, and returns.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Award className="h-6 w-6 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Personalized Results</h3>
+              </div>
+              <p className="text-gray-600">
+                Receive clear, actionable insights like recommended system size, net installation cost, savings, 
+                payback period, environmental benefits, and lifetime returns.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
       
